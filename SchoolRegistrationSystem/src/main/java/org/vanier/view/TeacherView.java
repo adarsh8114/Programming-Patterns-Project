@@ -1,4 +1,4 @@
-package org.example.model;
+package org.vanier.view;
 
 public class TeacherView {
 }
