@@ -1,4 +1,4 @@
-package org.example.factory;
+package org.vanier.factory;
 
 public class CourseFactory {
 }

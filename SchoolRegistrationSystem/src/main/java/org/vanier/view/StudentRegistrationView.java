@@ -1,4 +1,4 @@
-package org.example.view;
+package org.vanier.view;
 
 public class StudentRegistrationView {
 }

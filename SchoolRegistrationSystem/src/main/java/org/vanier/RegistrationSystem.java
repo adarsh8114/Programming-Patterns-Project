@@ -1,4 +1,4 @@
-package org.example;
+package org.vanier;
 
 public class RegistrationSystem {
 }

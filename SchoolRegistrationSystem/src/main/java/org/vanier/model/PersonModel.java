@@ -1,4 +1,4 @@
-package org.example.model;
+package org.vanier.model;
 
 public class PersonModel {
 }
