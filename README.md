@@ -74,5 +74,6 @@ This project serves as a practical implementation of key object-oriented program
 ### **Created By**
 - Matthew Veroutis
 - Matthew Macri
+- Phoeuk Thao
 
 Fall 2024 @ Vanier College
