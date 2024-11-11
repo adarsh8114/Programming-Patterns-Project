@@ -17,7 +17,7 @@ public class StudentRegistrationView extends JFrame {
 
     public StudentRegistrationView() throws HeadlessException {
         setTitle("Student Portal");
-        setSize(500, 500);
+        setSize(100, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         cardLayout = new CardLayout();

@@ -2,7 +2,7 @@ package org.vanier.view.studentsPanels;
 
 import javax.swing.*;
 
-public class StudentLoginPage {
+public class StudentLoginPage extends JFrame{
     private JPanel StudentLoginPanel;
     private JLabel WelcomeLabel;
     private JLabel StudentId;

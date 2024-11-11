@@ -2,7 +2,7 @@ package org.vanier.view.studentsPanels;
 
 import javax.swing.*;
 
-public class StudentRegisterCoursePage {
+public class StudentRegisterCoursePage extends JFrame{
     private JPanel StudentRegisterCoursePanel;
     private JLabel TitleLabel;
     private JButton ReturnButton;
