@@ -1,5 +1,7 @@
 package org.vanier.model;
 
+import java.util.Objects;
+
 public class PersonModel {
     private int id;
     private String firstName;
@@ -34,5 +36,22 @@ public class PersonModel {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonModel that = (PersonModel) o;
+        return id == that.id && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(phoneNumber, that.phoneNumber) && Objects.equals(emailAddress, that.emailAddress) && Objects.equals(password, that.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, phoneNumber, emailAddress, password);
     }
 }

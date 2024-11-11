@@ -42,4 +42,12 @@ public class RegistrationSystem {
     public List<CourseModel> getCourseList() {
         return courseList;
     }
+
+    public void setStudentList(List<StudentModel> studentList) {
+        this.studentList = studentList;
+    }
+
+    public void setCourseList(List<CourseModel> courseList) {
+        this.courseList = courseList;
+    }
 }

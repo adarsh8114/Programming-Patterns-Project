@@ -42,28 +42,6 @@ public class StudentModel extends PersonModel {
     }
 
     /**
-     * increases the number of courses that they are registered and change full time status if they have registered for
-     * 4 or more courses
-     */
-    public void increaseCourseRegistered() {
-        numberCoursesRegistered++;
-        if (numberCoursesRegistered >= 4) {
-            isFullTime = true;
-        }
-    }
-
-    /**
-     * decreases the number of courses that they are registered and changes full time status if they have registered for
-     * 3 or less courses
-     */
-    public void decreaseCourseRegistered() {
-        numberCoursesRegistered--;
-        if (numberCoursesRegistered < 4) {
-            isFullTime = false;
-        }
-    }
-
-    /**
      * this checks to see if the id and password is the correct one and associated with this student
      *
      * @param id       the id of the student
@@ -76,5 +54,36 @@ public class StudentModel extends PersonModel {
 
     public Set<CourseModel> getRegisteredCourses() {
         return registeredCourses;
+    }
+
+    public int getNumberCoursesRegistered() {
+        return numberCoursesRegistered;
+    }
+
+    public void setNumberCoursesRegistered(int numberCoursesRegistered) {
+        if(numberCoursesRegistered >= 4) {
+            isFullTime = true;
+        } else {
+            isFullTime = false;
+        }
+
+        this.numberCoursesRegistered = numberCoursesRegistered;
+    }
+
+    public void setFullTime(boolean fullTime) {
+        isFullTime = fullTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StudentModel that = (StudentModel) o;
+        return super.equals(o) && numberCoursesRegistered == that.numberCoursesRegistered && isFullTime == that.isFullTime && Objects.equals(registeredCourses, that.registeredCourses);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numberCoursesRegistered, isFullTime, registeredCourses);
     }
 }
