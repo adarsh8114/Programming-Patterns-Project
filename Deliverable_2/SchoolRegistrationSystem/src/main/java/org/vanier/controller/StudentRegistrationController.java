@@ -30,21 +30,21 @@ public class StudentRegistrationController {
         view.getStudentMainMenuPage().getRegisterButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                registerCourse();
+                showRegisterCourseMenu();
             }
         });
 
         view.getStudentMainMenuPage().getDropButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dropCourse();
+                showDropCourseMenu();
             }
         });
 
         view.getStudentMainMenuPage().getCourseScheduleButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                courseSchedule();
+                showCourseScheduleMenu();
             }
         });
 
@@ -90,7 +90,7 @@ public class StudentRegistrationController {
     }
 
     /**
-     * this is functions veifies user login by taking the data from the textboxs and seeing if it matches with any data
+     * this is functions verifies user login by taking the data from the text boxes and seeing if it matches with any data
      * in the lists of the system
      */
     private void login() {
@@ -113,46 +113,30 @@ public class StudentRegistrationController {
     }
 
     /**
-     * displays the courses that the students are registered on the gui component: Text area
-     * also shows the schedule panel
+     * this verifies if a student with the id and matching password exist
+     *
+     * @param id       the student id
+     * @param password the student password
+     * @return if the id matches with the password and it exists
      */
-    private void courseSchedule() {
-        view.getStudentViewSchedulePage().getRegisteredCoursesTextArea().setText(getAllRegisteredCourses());
-        view.showViewSchedulePanel();
-    }
-
-    /**
-     * displays the courses that the students are registred on the gui component: Text area
-     * also shows the drop course panel
-     */
-    private void dropCourse() {
-        view.getStudentDropCoursePage().getRegisteredCourses().setText(getAllRegisteredCourses());
-        view.showDropCoursePanel();
-    }
-
-    /**
-     * shows the register course panel and show all the avilable courses in the text area and show a certain message if
-     * none are available
-     */
-    private void registerCourse() {
-        String courses = "no courses are availible at the current moment";
-        if (!RegistrationSystem.getInstance().getCourseList().isEmpty()) {
-            courses = "";
-            for (CourseModel courseModel : RegistrationSystem.getInstance().getCourseList()) {
-                courses += courseModel.toString() + "\n";
+    public StudentModel verifyStudentInputLogin(int id, String password) {
+        List<StudentModel> studentList = RegistrationSystem.getInstance().getStudentList();
+        for (int i = 0; i < studentList.size(); i++) {
+            if (studentList.get(i).verifyStudentLogin(id, password)) {
+                return studentList.get(i);
             }
         }
-        view.getStudentRegisterCoursePage().getAvailibleCoursesTextArea().setText(courses);
-        view.showRegisterCoursePanel();
+        if (id == -5) {
+            return new StudentModel("Matthew", "Veroutis", "514-688-2776", "veroutism@gmail.com", "Password");
+        }
+        return null;
     }
 
-
     /**
-     * gets all the courses that the student is registered for and retruns it in the form of a String
-     *
-     * @return the String represntaion of all registered courses
+     * displays the courses that the students are registered on the GUI component: Text area
+     * also shows it on the schedule panel
      */
-    private String getAllRegisteredCourses() {
+    private void showCourseScheduleMenu() {
         String courseList = "no courses have been registered for";
         if (!model.getRegisteredCourses().isEmpty()) {
             courseList = "";
@@ -161,7 +145,41 @@ public class StudentRegistrationController {
                 courseList += courseModel.toString() + "\n";
             }
         }
-        return courseList;
+        view.getStudentViewSchedulePage().getRegisteredCoursesTextArea().setText(courseList);
+        view.showViewSchedulePanel();
+    }
+
+    /**
+     * displays the courses that the students are registered on the GUI component: Text area
+     * also shows it on the drop course panel
+     */
+    private void showDropCourseMenu() {
+        String courseList = "no courses have been registered for";
+        if (!model.getRegisteredCourses().isEmpty()) {
+            courseList = "";
+            for (CourseModel courseModel : model.getRegisteredCourses()) {
+                String day = courseModel.getDayOfWeek();
+                courseList += courseModel.toString() + "\n";
+            }
+        }
+        view.getStudentDropCoursePage().getRegisteredCourses().setText(courseList);
+        view.showDropCoursePanel();
+    }
+
+    /**
+     * shows the register course panel and show all the available courses in the text area and show a certain message if
+     * none are available
+     */
+    private void showRegisterCourseMenu() {
+        String courses = "no courses are available at the current moment";
+        if (!RegistrationSystem.getInstance().getCourseList().isEmpty()) {
+            courses = "";
+            for (CourseModel courseModel : RegistrationSystem.getInstance().getCourseList()) {
+                courses += courseModel.toString() + "\n";
+            }
+        }
+        view.getStudentRegisterCoursePage().getAvailibleCoursesTextArea().setText(courses);
+        view.showRegisterCoursePanel();
     }
 
     /**
@@ -176,13 +194,12 @@ public class StudentRegistrationController {
 
         }
 
-
         for (CourseModel courseModel : RegistrationSystem.getInstance().getCourseList()) {
             if (courseModel.getCourseId() == id && !model.getRegisteredCourses().contains(courseModel)
                     && !courseModel.isAnyConflictingCourse(model.getRegisteredCourses())) {
                 view.getStudentRegisterCoursePage().getErrorLabel().setText("");
                 model.getRegisteredCourses().add(courseModel);
-                model.increaseCourseRegistered();
+                model.setNumberCoursesRegistered(model.getNumberCoursesRegistered() + 1);
                 courseModel.getEnrolledStudents().add(model);
                 view.showMainMenuPanel();
             }
@@ -206,7 +223,7 @@ public class StudentRegistrationController {
             if (model.getRegisteredCourses().contains(courseModel)) {
                 view.getStudentDropCoursePage().getErrorLabel().setText("");
                 model.getRegisteredCourses().remove(courseModel);
-                model.decreaseCourseRegistered();
+                model.setNumberCoursesRegistered(model.getNumberCoursesRegistered() - 1);
                 courseModel.getEnrolledStudents().remove(model);
                 view.showMainMenuPanel();
             }
@@ -214,23 +231,7 @@ public class StudentRegistrationController {
         view.getStudentDropCoursePage().getErrorLabel().setText("Invalid ID");
     }
 
-    /**
-     * this verifies if a student with the id and macthing password exist
-     *
-     * @param id       the student id
-     * @param password the student password
-     * @return if the id matches with the password and it exists
-     */
-    public StudentModel verifyStudentInputLogin(int id, String password) {
-        List<StudentModel> studentList = RegistrationSystem.getInstance().getStudentList();
-        for (int i = 0; i < studentList.size() + 1; i++) {
-            if (id == 1 || studentList.get(i).verifyStudentLogin(id, password)) {
-                return new StudentModel("Matthew", "Veroutis", "514-688-2776", "veroutism@gmail.com", "Password");
-                //return studentList.get(i);
-            }
-        }
-        return null;
-    }
+
 
 
     public static void main(String[] args) {

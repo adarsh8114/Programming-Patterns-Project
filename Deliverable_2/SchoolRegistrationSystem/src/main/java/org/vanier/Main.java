@@ -7,7 +7,6 @@ import javax.swing.*;
 public class Main {
     public static void main(String[] args) {
         MainForm mainForm = new MainForm();
-
         // Set up the JFrame properties
         JFrame frame = new JFrame("Main Form");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -15,5 +14,7 @@ public class Main {
 
         frame.pack();
         frame.setVisible(true);
+
+
     }
 }

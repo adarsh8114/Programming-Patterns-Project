@@ -1,5 +1,6 @@
 package org.vanier.view;
 
+
 import org.vanier.view.studentsPanels.*;
 
 import javax.swing.*;
@@ -11,13 +12,16 @@ public class StudentRegistrationView extends JFrame {
 
     private StudentLoginPage studentLoginPage;
     private StudentMainMenuPage studentMainMenuPage;
+
     private StudentRegisterCoursePage studentRegisterCoursePage;
+
     private StudentViewSchedulePage studentViewSchedulePage;
+
     private StudentDropCoursePage studentDropCoursePage;
 
     public StudentRegistrationView() throws HeadlessException {
         setTitle("Student Portal");
-        setSize(100, 500);
+        setSize(500, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         cardLayout = new CardLayout();
@@ -40,40 +44,43 @@ public class StudentRegistrationView extends JFrame {
     }
 
     /**
-     * makes the login menu panel visable
+     * makes the login menu panel visible
      */
     public void showLoginPanel() {
         cardLayout.show(mainPanel, "login");
     }
 
     /**
-     * makes the main menu panel visable
+     * makes the main menu panel visible
      */
     public void showMainMenuPanel() {
         cardLayout.show(mainPanel, "mainMenu");
     }
 
     /**
-     * makes the register menu panel visable
+     * makes the register menu panel visible
      */
     public void showRegisterCoursePanel() {
         cardLayout.show(mainPanel, "registerCourse");
     }
 
     /**
-     * makes the course schedule panel visable
+     * makes the course schedule panel visible
      */
     public void showViewSchedulePanel() {
         cardLayout.show(mainPanel, "viewSchedule");
     }
 
     /**
-     * makes the drop course panel visable
+     * makes the drop course panel visible
      */
     public void showDropCoursePanel() {
         cardLayout.show(mainPanel, "dropCourse");
     }
 
+    public StudentLoginPage getStudentLoginPage() {
+        return studentLoginPage;
+    }
 
     public StudentMainMenuPage getStudentMainMenuPage() {
         return studentMainMenuPage;
@@ -89,9 +96,5 @@ public class StudentRegistrationView extends JFrame {
 
     public StudentDropCoursePage getStudentDropCoursePage() {
         return studentDropCoursePage;
-    }
-
-    public StudentLoginPage getStudentLoginPage() {
-        return studentLoginPage;
     }
 }

@@ -1,5 +1,6 @@
 package org.vanier.view;
 
+import org.vanier.controller.StudentRegistrationController;
 import org.vanier.view.adminPanels.AdminMainMenuPage;
 
 import javax.swing.*;
@@ -11,14 +12,17 @@ public class MainForm extends JFrame{
     private JButton teacherJButton;
     private JButton adminJButton;
     private JButton studentJButton;
+    private JLabel welcomeLabel;
 
 
     public MainForm() {
         panelMain = new JPanel();
+        welcomeLabel = new JLabel("Welcome to the School Management System, please select one of the following options to go to the given management menu");
         teacherJButton = new JButton("Teacher");
         adminJButton = new JButton("Admin");
         studentJButton = new JButton("Student");
 
+        panelMain.add(welcomeLabel);
         // Add buttons to the panel
         panelMain.add(teacherJButton);
         panelMain.add(adminJButton);
@@ -29,6 +33,7 @@ public class MainForm extends JFrame{
         this.setTitle("Main Form");
         this.setSize(300, 200); // Adjust size as needed
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 
         teacherJButton.addActionListener(new ActionListener() {
             @Override
@@ -50,9 +55,10 @@ public class MainForm extends JFrame{
         studentJButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                StudentRegistrationView studentRegistrationView = new StudentRegistrationView();
-                studentRegistrationView.setVisible(true);
+                new StudentRegistrationController();
             }
         });
     }
+
+
 }
