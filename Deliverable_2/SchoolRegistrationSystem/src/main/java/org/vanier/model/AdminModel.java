@@ -1,6 +1,7 @@
 package org.vanier.model;
 
 import org.vanier.RegistrationSystem;
+import org.vanier.factory.PersonFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,5 +66,19 @@ public class AdminModel {
             report.append("\n");
         }
         return report.toString();
+    }
+
+    // Method for creating a new student
+    public void createStudent(String firstName, String lastName, String phoneNumber, String emailAddress, String password) {
+        StudentModel newStudent = (StudentModel) PersonFactory.createPerson("student", firstName, lastName, phoneNumber, emailAddress, password, null);
+        registrationSystem.getStudentList().add(newStudent);
+        System.out.println("Student created: " + newStudent.getFirstName() + " " + newStudent.getLastName());
+    }
+
+    // Method for creating a new teacher
+    public void createTeacher(String firstName, String lastName, String phoneNumber, String emailAddress, String password, List<CourseModel> coursesTeaching) {
+        TeacherModel newTeacher = (TeacherModel) PersonFactory.createPerson("teacher", firstName, lastName, phoneNumber, emailAddress, password, coursesTeaching);
+        registrationSystem.getTeacherList().add(newTeacher);
+        System.out.println("Teacher created: " + newTeacher.getFirstName() + " " + newTeacher.getLastName());
     }
 }
