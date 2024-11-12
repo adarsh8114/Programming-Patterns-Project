@@ -1,5 +1,6 @@
 package org.vanier.view;
 
+import org.vanier.controller.AdminManagementController;
 import org.vanier.controller.StudentRegistrationController;
 import org.vanier.controller.TeacherController;
 import org.vanier.view.adminPanels.AdminMainMenuPage;
@@ -47,10 +48,15 @@ public class MainForm extends JFrame{
         adminJButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AdminMainMenuPage adminMainMenuPage= new AdminMainMenuPage();
+                // Create an instance of AdminManagementController
+                AdminManagementController controller = new AdminManagementController();
+
+                // Pass the controller to AdminMainMenuPage
+                AdminMainMenuPage adminMainMenuPage = new AdminMainMenuPage(controller);
                 adminMainMenuPage.setVisible(true);
             }
         });
+
 
         studentJButton.addActionListener(new ActionListener() {
             @Override

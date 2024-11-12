@@ -20,19 +20,7 @@ public class PersonModel {
         this.password = password;
     }
 
-
-    /**
-     * get the full name of the student by combining first and last name
-     *
-     * @return students full name
-     */
-    public String getFullName() {
-        return firstName + " " + lastName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
+    // Getters and Setters for each field
 
     public int getId() {
         return id;
@@ -42,12 +30,61 @@ public class PersonModel {
         this.id = id;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    // Method to get full name
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonModel that = (PersonModel) o;
-        return id == that.id && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(phoneNumber, that.phoneNumber) && Objects.equals(emailAddress, that.emailAddress) && Objects.equals(password, that.password);
+        return id == that.id && Objects.equals(firstName, that.firstName) &&
+                Objects.equals(lastName, that.lastName) &&
+                Objects.equals(phoneNumber, that.phoneNumber) &&
+                Objects.equals(emailAddress, that.emailAddress) &&
+                Objects.equals(password, that.password);
     }
 
     @Override
