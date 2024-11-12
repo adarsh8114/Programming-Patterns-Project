@@ -1,6 +1,7 @@
 package org.vanier.view;
 
 import org.vanier.controller.StudentRegistrationController;
+import org.vanier.controller.TeacherController;
 import org.vanier.view.adminPanels.AdminMainMenuPage;
 
 import javax.swing.*;
@@ -38,8 +39,7 @@ public class MainForm extends JFrame{
         teacherJButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TeacherView teacherView= new TeacherView();
-                teacherView.setVisible(true);
+                new TeacherController();
             }
         });
 

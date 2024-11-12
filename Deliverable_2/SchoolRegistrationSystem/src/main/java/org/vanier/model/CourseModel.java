@@ -69,10 +69,34 @@ public class CourseModel {
         return endTime;
     }
 
+    public String getCourseNumber() {
+        return courseNumber;
+    }
+
+    public int getCourseSection() {
+        return courseSection;
+    }
+
+    public int getCourseCapacity() {
+        return courseCapacity;
+    }
+
+    public int getCourseCredits() {
+        return courseCredits;
+    }
+
+    public TeacherModel getCourseTeacher() {
+        return courseTeacher;
+    }
+
+    public static int getCounter() {
+        return counter;
+    }
+
     /**
      * checks to see if the current course is conflicting in day or time with any courses in the list
      *
-     * @param list the list to see if their is any conflicting courses
+     * @param list the list to see if there is any conflicting courses
      * @return if it is conflicting
      */
     public boolean isAnyConflictingCourse(Collection<CourseModel> list) {
