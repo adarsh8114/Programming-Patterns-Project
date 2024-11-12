@@ -50,4 +50,12 @@ public class RegistrationSystem {
     public void setCourseList(List<CourseModel> courseList) {
         this.courseList = courseList;
     }
+
+    public void setTeacherList(List<TeacherModel> teacherList) {
+        this.teacherList = teacherList;
+    }
+
+    public List<TeacherModel> getTeacherList() {
+        return teacherList;
+    }
 }
