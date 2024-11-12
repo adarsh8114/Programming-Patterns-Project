@@ -1,20 +1,21 @@
 package org.vanier.model;
 
+import org.vanier.RegistrationSystem;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdminModel {
-    private List<CourseModel> courses = new ArrayList<>();
-    private List<StudentModel> students = new ArrayList<>();
+    private RegistrationSystem registrationSystem = RegistrationSystem.getInstance();
 
-    // Add a new course
     public void addCourse(CourseModel course) {
-        courses.add(course);
+        registrationSystem.getCourseList().add(course);
         System.out.println("Course added: " + course.getCourseId());
     }
 
     // Update an existing course
     public boolean updateCourse(int courseId, CourseModel updatedCourse) {
+        List<CourseModel> courses = registrationSystem.getCourseList();
         for (int i = 0; i < courses.size(); i++) {
             if (courses.get(i).getCourseId() == courseId) {
                 courses.set(i, updatedCourse);
@@ -28,12 +29,14 @@ public class AdminModel {
 
     // Delete a course
     public boolean deleteCourse(int courseId) {
-        return courses.removeIf(course -> course.getCourseId() == courseId);
+        return registrationSystem.getCourseList().removeIf(course -> course.getCourseId() == courseId);
     }
 
     // Retrieve a list of students enrolled in a specific course
     public List<StudentModel> getStudentEnrollments(int courseId) {
         List<StudentModel> enrolledStudents = new ArrayList<>();
+        List<StudentModel> students = registrationSystem.getStudentList();
+
         for (StudentModel student : students) {
             for (CourseModel course : student.getRegisteredCourses()) {
                 if (course.getCourseId() == courseId) {
@@ -48,6 +51,8 @@ public class AdminModel {
     // Generate a report on course enrollments
     public String generateEnrollmentReport() {
         StringBuilder report = new StringBuilder("Enrollment Report:\n");
+        List<CourseModel> courses = registrationSystem.getCourseList();
+
         for (CourseModel course : courses) {
             report.append(" (ID: ").append(course.getCourseId()).append(")\n");
 

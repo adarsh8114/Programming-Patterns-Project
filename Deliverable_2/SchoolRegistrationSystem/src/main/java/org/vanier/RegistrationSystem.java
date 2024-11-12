@@ -1,5 +1,6 @@
 package org.vanier;
 
+import org.vanier.model.AdminModel;
 import org.vanier.model.CourseModel;
 import org.vanier.model.StudentModel;
 import org.vanier.model.TeacherModel;
@@ -11,6 +12,7 @@ public class RegistrationSystem {
     private List<StudentModel> studentList;
     private List<CourseModel> courseList;
     private List<TeacherModel> teacherList;
+    private List<AdminModel> adminList;
     private static RegistrationSystem registrationSystem;
 
     private RegistrationSystem() {
