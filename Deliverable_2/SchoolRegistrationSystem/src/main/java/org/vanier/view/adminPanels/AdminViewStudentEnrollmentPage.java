@@ -10,24 +10,20 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class AdminViewStudentEnrollmentPage extends JFrame {
-    private JTextField studentIdTextField;
-    private JPanel viewEnrollmentPanel; // Define a new main panel
-    private JButton returnToPreviousPageButton;
-    private JButton viewStudentEnrollmentButton;
     private JTextField courseIdTextField;
     private JTextArea enrollmentTextArea;
+    private JButton viewStudentEnrollmentButton;
+    private JButton returnToPreviousPageButton;
     private AdminManagementController controller;
 
     public AdminViewStudentEnrollmentPage(AdminManagementController controller) {
         this.controller = controller;
 
         // Initialize the main panel
-        viewEnrollmentPanel = new JPanel();
+        JPanel viewEnrollmentPanel = new JPanel();
         viewEnrollmentPanel.setLayout(new BorderLayout());
 
         // Initialize components
-        studentIdTextField = new JTextField(10);
-        viewEnrollmentPanel.add(studentIdTextField); // Assuming viewEnrollmentPanel is the panel where it should be added
         courseIdTextField = new JTextField(10);
         viewStudentEnrollmentButton = new JButton("View Enrollments");
         returnToPreviousPageButton = new JButton("Back");
@@ -81,7 +77,7 @@ public class AdminViewStudentEnrollmentPage extends JFrame {
         // Set the main panel as the content pane
         setTitle("View Student Enrollment");
         setContentPane(viewEnrollmentPanel); // Set the main panel as content pane
-        setSize(400, 300);
+        setSize(500, 400); // Adjusted size for better layout
         setLocationRelativeTo(null);
         setVisible(true);
     }
