@@ -1,10 +1,6 @@
 package org.vanier.view.adminPanels;
 
-import org.vanier.controller.AdminManagementController;
-
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class AdminMainMenuPage extends JFrame {
     private JLabel optionsLabel;
@@ -19,11 +15,8 @@ public class AdminMainMenuPage extends JFrame {
     private JButton manageStudentEnrollmentsButton;
     private JButton viewStudentEnrollmentsButton;
     private JButton generateReportsOnStudentButton;
-    private AdminManagementController controller;
 
-    public AdminMainMenuPage(AdminManagementController controller) {
-        this.controller = controller;
-
+    public AdminMainMenuPage() {
         setTitle("Admin Main Menu");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -56,31 +49,35 @@ public class AdminMainMenuPage extends JFrame {
         setContentPane(mainPanel);
         setSize(500, 300);
         setLocationRelativeTo(null);
-
-        addCourseButton.addActionListener(e -> new AdminAddCoursePage(controller).setVisible(true));
-        updateCourseButton.addActionListener(e -> new AdminUpdateCoursePage(controller).setVisible(true));
-
-        deleteCourseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    int courseId = Integer.parseInt(JOptionPane.showInputDialog("Enter Course ID to delete:"));
-                    boolean success = controller.handleDeleteCourse(courseId);
-                    if (success) {
-                        JOptionPane.showMessageDialog(null, "Course deleted successfully.");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Course not found. Please check the Course ID.");
-                    }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Invalid Course ID. Please enter a numeric value.");
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Error deleting course: " + ex.getMessage());
-                }
-            }
-        });
-
-        generateReportsOnCourseButton.addActionListener(e -> controller.handleGenerateReport());
-
         setVisible(true);
+    }
+
+    // Getters for UI elements to be accessed in the controller
+    public JButton getAddCourseButton() {
+        return addCourseButton;
+    }
+
+    public JButton getUpdateCourseButton() {
+        return updateCourseButton;
+    }
+
+    public JButton getDeleteCourseButton() {
+        return deleteCourseButton;
+    }
+
+    public JButton getGenerateReportsOnCourseButton() {
+        return generateReportsOnCourseButton;
+    }
+
+    public JButton getManageStudentEnrollmentsButton() {
+        return manageStudentEnrollmentsButton;
+    }
+
+    public JButton getViewStudentEnrollmentsButton() {
+        return viewStudentEnrollmentsButton;
+    }
+
+    public JButton getGenerateReportsOnStudentButton() {
+        return generateReportsOnStudentButton;
     }
 }

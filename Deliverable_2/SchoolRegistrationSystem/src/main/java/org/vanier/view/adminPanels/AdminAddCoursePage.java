@@ -1,11 +1,6 @@
 package org.vanier.view.adminPanels;
 
-import org.vanier.controller.AdminManagementController;
-import org.vanier.model.CourseModel;
-
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class AdminAddCoursePage extends JFrame {
     private JTextField courseIdTextField;
@@ -15,40 +10,57 @@ public class AdminAddCoursePage extends JFrame {
     private JTextField courseNumberField, courseSectionField, courseCapacityField, courseCreditsField, startTimeField, endTimeField, dayOfWeekField;
     private JButton courseAddButton;
     private JButton returnToPreviousPageButton;
-    private AdminManagementController controller;
 
-    public AdminAddCoursePage(AdminManagementController controller) {
-        this.controller = controller;
-
-        courseAddButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                courseIdTextField = new JTextField(10);
-                addCourseMenu.add(courseIdTextField); // Assuming addCourseMenu is the panel where it should be added
-                String courseNumber = courseNumberField.getText();
-                int courseSection = Integer.parseInt(courseSectionField.getText());
-                int courseCapacity = Integer.parseInt(courseCapacityField.getText());
-                int courseCredits = Integer.parseInt(courseCreditsField.getText());
-                int startTime = Integer.parseInt(startTimeField.getText());
-                int endTime = Integer.parseInt(endTimeField.getText());
-                String dayOfWeek = dayOfWeekField.getText();
-
-                CourseModel newCourse = new CourseModel(courseNumber, courseSection, courseCapacity, courseCredits, startTime, endTime, dayOfWeek);
-                controller.handleAddCourse(newCourse);
-            }
-        });
-
-        returnToPreviousPageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
-
+    public AdminAddCoursePage() {
         setTitle("Add Course");
         setContentPane(addCourseMenu);
         setSize(400, 300);
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    // Getters for UI elements that the controller will interact with
+    public JTextField getCourseIdTextField() {
+        return courseIdTextField;
+    }
+
+    public JTextField getCourseNumberField() {
+        return courseNumberField;
+    }
+
+    public JTextField getCourseSectionField() {
+        return courseSectionField;
+    }
+
+    public JTextField getCourseCapacityField() {
+        return courseCapacityField;
+    }
+
+    public JTextField getCourseCreditsField() {
+        return courseCreditsField;
+    }
+
+    public JTextField getStartTimeField() {
+        return startTimeField;
+    }
+
+    public JTextField getEndTimeField() {
+        return endTimeField;
+    }
+
+    public JTextField getDayOfWeekField() {
+        return dayOfWeekField;
+    }
+
+    public JButton getCourseAddButton() {
+        return courseAddButton;
+    }
+
+    public JButton getReturnToPreviousPageButton() {
+        return returnToPreviousPageButton;
+    }
+
+    public JPanel getAddCourseMenu() {
+        return addCourseMenu;
     }
 }
