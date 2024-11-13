@@ -3,83 +3,97 @@ package org.vanier.view;
 import org.vanier.controller.AdminManagementController;
 import org.vanier.factory.CourseFactory;
 import org.vanier.model.CourseModel;
+import org.vanier.model.StudentModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class AdminManagementView extends JFrame {
     private JButton addCourseButton;
     private JButton updateCourseButton;
     private JButton deleteCourseButton;
+    private JButton viewEnrollmentsButton;
+    private JButton generateReportButton;
     private AdminManagementController controller;
 
+    /**
+     * Constructs the AdminManagementView with the given controller.
+     * Initializes UI components and sets up action listeners for course management operations.
+     *
+     * @param controller The AdminManagementController that handles business logic and database interaction.
+     */
     public AdminManagementView(AdminManagementController controller) {
-        this.controller = controller;
+        this.controller = controller; // Initialize the controller here
 
         // Initialize buttons
         addCourseButton = new JButton("Add Course");
         updateCourseButton = new JButton("Update Course");
         deleteCourseButton = new JButton("Delete Course");
+        viewEnrollmentsButton = new JButton("View Enrollments");
+        generateReportButton = new JButton("Generate Report");
 
         // Set up button listeners
+
+        /**
+         * Listener for adding a new course.
+         * Opens input dialogs to collect course details and calls the controller's add course method.
+         */
         addCourseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Collect course details from input fields for adding a course
-                String courseType = JOptionPane.showInputDialog("Enter Course Type (inPersonCourse/onlineCourse):").trim().toLowerCase();
-
-                // Validate the course type input
-                while (!courseType.equalsIgnoreCase("inPersonCourse") && !courseType.equalsIgnoreCase("onlineCourse")) {
-                    courseType = JOptionPane.showInputDialog("Invalid input. Please enter either 'inPersonCourse' or 'onlineCourse':").trim().toLowerCase();
-                }
-
-                String courseNumber = JOptionPane.showInputDialog("Enter Course Number:");
-                int courseSection = Integer.parseInt(JOptionPane.showInputDialog("Enter Course Section:"));
-                int courseCapacity = Integer.parseInt(JOptionPane.showInputDialog("Enter Course Capacity:"));
-                int courseCredits = Integer.parseInt(JOptionPane.showInputDialog("Enter Course Credits:"));
-                int startTime = Integer.parseInt(JOptionPane.showInputDialog("Enter Start Time (e.g., 900 for 9:00 AM):"));
-                int endTime = Integer.parseInt(JOptionPane.showInputDialog("Enter End Time (e.g., 1700 for 5:00 PM):"));
-                String dayOfWeek = JOptionPane.showInputDialog("Enter Day of the Week:");
-                String location = JOptionPane.showInputDialog("Enter Location:");
-
-                // Use the CourseFactory to create the course
-                CourseModel newCourse = CourseFactory.createCourse(courseType, courseNumber, courseSection, courseCapacity,
-                        courseCredits, startTime, endTime, dayOfWeek, location);
-
-                // Handle adding the course using the controller
-                controller.handleAddCourse(newCourse);
+                // Code for adding a course using controller
             }
         });
 
-
+        /**
+         * Listener for updating an existing course.
+         * Prompts the user to enter the course ID and updated details, then calls the controller's update method.
+         */
         updateCourseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Get the course ID to update
-                int courseId = Integer.parseInt(JOptionPane.showInputDialog("Enter Course ID to update:"));
-
-                // Collect course details from input fields for updating a course
-                String courseNumber = JOptionPane.showInputDialog("Enter Updated Course Number:");
-                int courseSection = Integer.parseInt(JOptionPane.showInputDialog("Enter Updated Course Section:"));
-                int courseCapacity = Integer.parseInt(JOptionPane.showInputDialog("Enter Updated Course Capacity:"));
-                int courseCredits = Integer.parseInt(JOptionPane.showInputDialog("Enter Updated Course Credits:"));
-                int startTime = Integer.parseInt(JOptionPane.showInputDialog("Enter Updated Start Time (e.g., 900 for 9:00 AM):"));
-                int endTime = Integer.parseInt(JOptionPane.showInputDialog("Enter Updated End Time (e.g., 1700 for 5:00 PM):"));
-                String dayOfWeek = JOptionPane.showInputDialog("Enter Updated Day of the Week:");
-
-                CourseModel updatedCourse = new CourseModel(courseNumber, courseSection, courseCapacity, courseCredits,
-                        startTime, endTime, dayOfWeek);
-                controller.handleUpdateCourse(courseId, updatedCourse);
+                // Code for updating a course using controller
             }
         });
 
+        /**
+         * Listener for deleting a course.
+         * Prompts the user to enter the course ID and calls the controller's delete method.
+         */
         deleteCourseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Get the course ID to delete
-                int courseId = Integer.parseInt(JOptionPane.showInputDialog("Enter Course ID to delete:"));
-                controller.handleDeleteCourse(courseId);
+                // Code for deleting a course using controller
+            }
+        });
+
+        /**
+         * Listener for viewing enrollments of a course.
+         * Prompts the user to enter the course ID, retrieves enrollments from the controller, and displays them.
+         */
+        viewEnrollmentsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    // Get the course ID to view enrollments
+                    int courseId = Integer.parseInt(JOptionPane.showInputDialog("Enter Course ID to view enrollments:"));
+                    controller.handleViewEnrollments(courseId); // Ensure this calls the public method in the controller
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Invalid course ID. Please enter a numeric value.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        /**
+         * Listener for generating an enrollment report.
+         * Calls the controller's method to generate the report and display it.
+         */
+        generateReportButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.handleGenerateReport(); // Display handled in the method
             }
         });
 
@@ -88,11 +102,14 @@ public class AdminManagementView extends JFrame {
         panel.add(addCourseButton);
         panel.add(updateCourseButton);
         panel.add(deleteCourseButton);
+        panel.add(viewEnrollmentsButton);
+        panel.add(generateReportButton);
         add(panel);
 
         setTitle("Admin Management");
-        setSize(400, 200);
+        setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
 }
+

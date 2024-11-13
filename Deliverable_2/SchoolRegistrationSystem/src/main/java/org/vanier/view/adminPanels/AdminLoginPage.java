@@ -12,6 +12,8 @@ public class AdminLoginPage extends JFrame {
     private JButton loginLabel; // This should be renamed to "loginButton" for clarity
     private JTextField adminIdTextField;
     private JPasswordField passwordField;
+    JFrame adminView = new JFrame();
+
 
     public AdminLoginPage() {
         // Initialize components (assuming these are set up correctly elsewhere in your code)
@@ -21,7 +23,7 @@ public class AdminLoginPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Create an instance of AdminManagementController
-                AdminManagementController controller = new AdminManagementController();
+                AdminManagementController controller = new AdminManagementController(adminView);
 
                 // Pass the controller to AdminMainMenuPage
                 AdminMainMenuPage adminMainMenuPage = new AdminMainMenuPage(controller);

@@ -58,7 +58,7 @@ public class AdminViewStudentEnrollmentPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     int courseId = Integer.parseInt(courseIdTextField.getText());
-                    List<StudentModel> enrolledStudents = controller.viewEnrollments(courseId);
+                    List<StudentModel> enrolledStudents = controller.handleViewEnrollments(courseId);
 
                     // Display students in the JTextArea
                     enrollmentTextArea.setText("Enrolled Students for Course ID: " + courseId + "\n");

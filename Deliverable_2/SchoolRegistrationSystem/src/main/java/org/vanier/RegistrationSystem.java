@@ -22,6 +22,25 @@ public class RegistrationSystem {
     }
 
     /**
+     * Retrieves the list of students enrolled in a specific course by course ID.
+     *
+     * @param courseId The ID of the course to get enrollments for.
+     * @return A list of StudentModel objects representing students enrolled in the course.
+     */
+    public List<StudentModel> getEnrolledStudentsByCourseId(int courseId) {
+        List<StudentModel> enrolledStudents = new ArrayList<>();
+        for (StudentModel student : studentList) {
+            for (CourseModel course : student.getRegisteredCourses()) {
+                if (course.getCourseId() == courseId) {
+                    enrolledStudents.add(student);
+                    break;
+                }
+            }
+        }
+        return enrolledStudents;
+    }
+
+    /**
      * get or creates a new instance of the registrationSystem
      *
      * @return the singular registration system instnace

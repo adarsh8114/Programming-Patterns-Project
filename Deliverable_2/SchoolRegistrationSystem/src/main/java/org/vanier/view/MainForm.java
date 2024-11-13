@@ -15,7 +15,7 @@ public class MainForm extends JFrame{
     private JButton adminJButton;
     private JButton studentJButton;
     private JLabel welcomeLabel;
-
+    JFrame adminView = new JFrame();
 
     public MainForm() {
         panelMain = new JPanel();
@@ -49,7 +49,7 @@ public class MainForm extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Create an instance of AdminManagementController
-                AdminManagementController controller = new AdminManagementController();
+                AdminManagementController controller = new AdminManagementController(adminView);
 
                 // Pass the controller to AdminMainMenuPage
                 AdminMainMenuPage adminMainMenuPage = new AdminMainMenuPage(controller);

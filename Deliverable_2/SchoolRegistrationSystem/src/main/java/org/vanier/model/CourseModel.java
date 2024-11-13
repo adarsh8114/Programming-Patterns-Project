@@ -52,6 +52,9 @@ public class CourseModel {
         return dayOfWeek;
     }
 
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
 
     public int getCourseId() {
         return courseId;
@@ -61,32 +64,64 @@ public class CourseModel {
         return enrolledStudents;
     }
 
+    public void setEnrolledStudents(List<StudentModel> enrolledStudents) {
+        this.enrolledStudents = enrolledStudents;
+    }
+
     public int getStartTime() {
         return startTime;
+    }
+
+    public void setStartTime(int startTime) {
+        this.startTime = startTime;
     }
 
     public int getEndTime() {
         return endTime;
     }
 
+    public void setEndTime(int endTime) {
+        this.endTime = endTime;
+    }
+
     public String getCourseNumber() {
         return courseNumber;
+    }
+
+    public void setCourseNumber(String courseNumber) {
+        this.courseNumber = courseNumber;
     }
 
     public int getCourseSection() {
         return courseSection;
     }
 
+    public void setCourseSection(int courseSection) {
+        this.courseSection = courseSection;
+    }
+
     public int getCourseCapacity() {
         return courseCapacity;
+    }
+
+    public void setCourseCapacity(int courseCapacity) {
+        this.courseCapacity = courseCapacity;
     }
 
     public int getCourseCredits() {
         return courseCredits;
     }
 
+    public void setCourseCredits(int courseCredits) {
+        this.courseCredits = courseCredits;
+    }
+
     public TeacherModel getCourseTeacher() {
         return courseTeacher;
+    }
+
+    public void setCourseTeacher(TeacherModel courseTeacher) {
+        this.courseTeacher = courseTeacher;
     }
 
     public static int getCounter() {

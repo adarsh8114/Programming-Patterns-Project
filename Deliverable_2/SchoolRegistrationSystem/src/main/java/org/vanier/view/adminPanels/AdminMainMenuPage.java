@@ -99,7 +99,7 @@ public class AdminMainMenuPage extends JFrame {
         generateReportsOnCourseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.generateReport(); // Call the controller's method to generate a report
+                controller.handleGenerateReport(); // Call the controller's method to generate a report
             }
         });
 
