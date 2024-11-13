@@ -1,22 +1,52 @@
 package org.vanier.view.adminPanels;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class AdminLoginPage extends JFrame{
+public class AdminLoginPage extends JFrame {
     private JLabel adminWelcomeLabel;
     private JLabel adminIdLabel;
     private JLabel passwordLabel;
-    private JButton loginLabel;
+    private JButton loginButton;
+    private JTextField adminIdTextField;
+    private JPasswordField passwordField;
 
     public AdminLoginPage() {
-        loginLabel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AdminMainMenuPage adminMainMenuPage = new AdminMainMenuPage();
-                adminMainMenuPage.setVisible(true);
-            }
-        });
+        // Initialize components
+        adminWelcomeLabel = new JLabel("Welcome Admin");
+        adminIdLabel = new JLabel("Admin ID:");
+        passwordLabel = new JLabel("Password:");
+        adminIdTextField = new JTextField(20);
+        passwordField = new JPasswordField(20);
+        loginButton = new JButton("Login");
+
+        // Layout setup
+        JPanel panel = new JPanel();
+        panel.add(adminWelcomeLabel);
+        panel.add(adminIdLabel);
+        panel.add(adminIdTextField);
+        panel.add(passwordLabel);
+        panel.add(passwordField);
+        panel.add(loginButton);
+
+        add(panel);
+
+        // Frame properties
+        setTitle("Admin Login");
+        setSize(400, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+    }
+
+    // Getters for the UI elements
+    public JButton getLoginButton() {
+        return loginButton;
+    }
+
+    public JTextField getAdminIdTextField() {
+        return adminIdTextField;
+    }
+
+    public JPasswordField getPasswordField() {
+        return passwordField;
     }
 }

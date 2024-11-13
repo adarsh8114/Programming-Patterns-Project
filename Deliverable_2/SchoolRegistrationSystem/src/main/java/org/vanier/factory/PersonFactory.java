@@ -1,10 +1,9 @@
 package org.vanier.factory;
 
 
-import org.vanier.model.AdminModel;
-import org.vanier.model.PersonModel;
-import org.vanier.model.StudentModel;
-import org.vanier.model.TeacherModel;
+import org.vanier.model.*;
+
+import java.util.List;
 
 public class PersonFactory {
 
@@ -18,15 +17,13 @@ public class PersonFactory {
      * @param password persons password
      * @return the person which is an admin, student or teacher
      */
-    public static PersonModel createCourse(String personType, String firstName, String lastName, String phoneNumber,
-                                           String emailAddress, String password) {
-        if (personType.equalsIgnoreCase("Admin")) {
-            //return new AdminModel();
-        } else if (personType.equalsIgnoreCase("Student")){
+    public static PersonModel createPerson(String personType, String firstName, String lastName, String phoneNumber,
+                                           String emailAddress, String password, List<CourseModel> coursesTeaching) {
+         if (personType.equalsIgnoreCase("Student")) {
             return new StudentModel(firstName, lastName, phoneNumber, emailAddress, password);
-        } else {
-            //return new TeacherModel();
+        } else if (personType.equalsIgnoreCase("Teacher")) {
+            return new TeacherModel(firstName, lastName, phoneNumber, emailAddress, password, coursesTeaching);
         }
-        return null;
+        throw new IllegalArgumentException("Invalid person type provided");
     }
 }
