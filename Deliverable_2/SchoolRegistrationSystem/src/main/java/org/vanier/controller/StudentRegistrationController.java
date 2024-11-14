@@ -231,11 +231,4 @@ public class StudentRegistrationController {
         view.getStudentDropCoursePage().getErrorLabel().setText("Invalid ID");
     }
 
-
-
-
-    public static void main(String[] args) {
-        new StudentRegistrationController();
-    }
-
 }

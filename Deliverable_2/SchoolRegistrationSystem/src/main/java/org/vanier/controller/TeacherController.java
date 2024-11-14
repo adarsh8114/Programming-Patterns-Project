@@ -94,7 +94,8 @@ public class TeacherController {
 
     /**
      * Checks the login credentials to make sure that the teacher has a valid id and password
-     * @param id the teachers id
+     *
+     * @param id       the teachers id
      * @param password the teachers password
      * @return TeacherModel if the credentials are valid; else null
      */

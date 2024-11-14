@@ -1,6 +1,7 @@
 package org.vanier.model;
 
 import org.vanier.RegistrationSystem;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,5 +91,4 @@ public class AdminModel {
     public List<CourseModel> getAllCourses() {
         return registrationSystem.getCourseList();
     }
-
 }

@@ -28,7 +28,6 @@ public class StudentModel extends PersonModel {
         });
     }
 
-
     /**
      * gets the student status based on if they are full time or not
      *
@@ -61,7 +60,7 @@ public class StudentModel extends PersonModel {
     }
 
     public void setNumberCoursesRegistered(int numberCoursesRegistered) {
-        if(numberCoursesRegistered >= 4) {
+        if (numberCoursesRegistered >= 4) {
             isFullTime = true;
         } else {
             isFullTime = false;
