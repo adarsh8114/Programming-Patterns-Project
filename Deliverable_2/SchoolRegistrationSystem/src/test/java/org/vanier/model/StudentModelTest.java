@@ -3,6 +3,7 @@ package org.vanier.model;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+
 public class StudentModelTest {
     //verifyStudentLogin Method tests
     @Test

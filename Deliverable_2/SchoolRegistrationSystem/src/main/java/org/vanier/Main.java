@@ -11,10 +11,8 @@ public class Main {
         JFrame frame = new JFrame("Main Form");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(mainForm.getContentPane());
-
         frame.pack();
         frame.setVisible(true);
-
 
     }
 }

@@ -31,7 +31,7 @@ public class StudentRegistrationControllerTest {
         student1.setId(1);
         StudentModel student2 = new StudentModel("Math", "Ver", "123-456-7890", "ver@example.com", "pass");
         student2.setId(2);
-        registrationSystem.setStudentList(List.of(student1,student2));
+        registrationSystem.setStudentList(List.of(student1, student2));
 
 
         StudentModel studentModel = new StudentRegistrationController().verifyStudentInputLogin(2, "pass");
@@ -46,7 +46,7 @@ public class StudentRegistrationControllerTest {
         student1.setId(1);
         StudentModel student2 = new StudentModel("Math", "Ver", "123-456-7890", "ver@example.com", "pass");
         student2.setId(2);
-        registrationSystem.setStudentList(List.of(student1,student2));
+        registrationSystem.setStudentList(List.of(student1, student2));
 
 
         StudentModel studentModel = new StudentRegistrationController().verifyStudentInputLogin(5, "pass");
@@ -70,12 +70,11 @@ public class StudentRegistrationControllerTest {
         student1.setId(1);
         StudentModel student2 = new StudentModel("Math", "Ver", "123-456-7890", "ver@example.com", "pass");
         student2.setId(2);
-        registrationSystem.setStudentList(List.of(student1,student2));
+        registrationSystem.setStudentList(List.of(student1, student2));
 
 
         StudentModel studentModel = new StudentRegistrationController().verifyStudentInputLogin(2, "passssss");
 
         assertNull(studentModel);
     }
-
 }
