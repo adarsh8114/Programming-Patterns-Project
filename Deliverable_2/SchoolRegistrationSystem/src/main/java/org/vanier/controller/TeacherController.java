@@ -71,6 +71,9 @@ public class TeacherController {
         });
     }
 
+    /**
+     * makes sure the login information is valid before opening the main menu.
+     */
     private void login() {
         int id = -1;
         try {
@@ -89,6 +92,12 @@ public class TeacherController {
         }
     }
 
+    /**
+     * Checks the login credentials to make sure that the teacher has a valid id and password
+     * @param id the teachers id
+     * @param password the teachers password
+     * @return TeacherModel if the credentials are valid; else null
+     */
     private TeacherModel verifyTeacherInputLogin(int id, String password) {
         List<TeacherModel> teacherList = RegistrationSystem.getInstance().getTeacherList();
         for (TeacherModel teacher : teacherList) {
@@ -97,11 +106,9 @@ public class TeacherController {
             }
         }
         if (id == -20) {
-            // Create CourseModel instances for the courses this teacher is teaching
             CourseModel historyCourse = new CourseModel("HIST101", 1, 30, 3, 9, 11, "Monday");
             CourseModel historyCourse2 = new CourseModel("HIST102", 1, 30, 3, 11, 1, "Wednesday");
 
-            // Add courses to a list
             List<CourseModel> coursesTeaching = new ArrayList<>();
             coursesTeaching.add(historyCourse);
             coursesTeaching.add(historyCourse2);
@@ -111,16 +118,25 @@ public class TeacherController {
         return null;
     }
 
+    /**
+     * method to display schedule in the teacher view schedule panel
+     */
     private void showTeacherSchedule() {
         String schedule = model.getSchedule();
         view.getTeacherViewSchedulePage().getTeacherScheduleTextArea().setText(schedule);
         view.showViewSchedulePanel();
     }
 
+    /**
+     * displays course details in the teacher course details page
+     */
     private void showCourseDetails() {
         view.showViewCourseDetailsPanel();
     }
 
+    /**
+     * Method to log out of the teacher portal by going back to the main menu
+     */
     private void logOut() {
         view.showLoginPanel();
     }
