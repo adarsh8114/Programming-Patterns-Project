@@ -1,6 +1,7 @@
 package org.vanier.view.studentsPanels;
 
 import javax.swing.*;
+import java.util.ResourceBundle;
 
 public class StudentDropCoursePage extends JFrame{
     private JLabel TitleLabel;
@@ -34,5 +35,12 @@ public class StudentDropCoursePage extends JFrame{
 
     public JLabel getErrorLabel() {
         return ErrorLabel;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle) {
+        TitleLabel.setText(resourceBundle.getString("dropCourseMenuTitle"));
+        InstructionLabel.setText(resourceBundle.getString("courseIdLabel"));
+        DropCourseButton.setText(resourceBundle.getString("dropCourseButton"));
+        ReturnButton.setText(resourceBundle.getString("returnToPreviousPageButtonText"));
     }
 }

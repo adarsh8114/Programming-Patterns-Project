@@ -1,6 +1,7 @@
 package org.vanier.view.studentsPanels;
 
 import javax.swing.*;
+import java.util.ResourceBundle;
 
 public class StudentViewSchedulePage extends JFrame{
     private JPanel StudentViewSchedulePanel;
@@ -18,5 +19,10 @@ public class StudentViewSchedulePage extends JFrame{
 
     public JTextArea getRegisteredCoursesTextArea() {
         return RegisteredCoursesTextArea;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle) {
+        TitleLabel.setText(resourceBundle.getString("viewCourseScheduleMenuTitle"));
+        ReturnButton.setText(resourceBundle.getString("returnToPreviousPageButtonText"));
     }
 }

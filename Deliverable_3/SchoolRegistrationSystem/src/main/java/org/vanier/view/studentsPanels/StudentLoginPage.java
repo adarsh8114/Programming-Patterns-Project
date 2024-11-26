@@ -1,6 +1,7 @@
 package org.vanier.view.studentsPanels;
 
 import javax.swing.*;
+import java.util.ResourceBundle;
 
 public class StudentLoginPage extends JFrame{
     private JPanel StudentLoginPanel;
@@ -30,5 +31,12 @@ public class StudentLoginPage extends JFrame{
 
     public JLabel getErrorLabel() {
         return ErrorLabel;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle) {
+        WelcomeLabel.setText(resourceBundle.getString("welcomeStudentLoginPage"));
+        StudentId.setText(resourceBundle.getString("studentIdLabel"));
+        PasswordLabel.setText(resourceBundle.getString("passwordLabel"));
+        loginButton.setText(resourceBundle.getString("loginButton"));
     }
 }

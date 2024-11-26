@@ -1,7 +1,5 @@
 package org.vanier.model;
 
-import org.vanier.RegistrationSystem;
-
 import java.util.ArrayList;
 import java.util.List;
 

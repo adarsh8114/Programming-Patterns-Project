@@ -1,11 +1,9 @@
 package org.vanier.controller;
 
-import org.vanier.RegistrationSystem;
+import org.vanier.model.RegistrationSystem;
 import org.vanier.model.CourseModel;
 import org.vanier.model.StudentModel;
 import org.vanier.view.StudentRegistrationView;
-import org.vanier.view.studentsPanels.StudentDropCoursePage;
-import org.vanier.view.studentsPanels.StudentViewSchedulePage;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -62,6 +60,7 @@ public class StudentRegistrationController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 view.getStudentDropCoursePage().getErrorLabel().setText("");
+                view.getStudentDropCoursePage().changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
                 view.showMainMenuPanel();
             }
         });
