@@ -1,6 +1,7 @@
 package org.vanier.view.adminPanels;
 
 import javax.swing.*;
+import java.util.ResourceBundle;
 
 public class AdminLoginPage extends JFrame {
     private JLabel adminWelcomeLabel;
@@ -49,4 +50,12 @@ public class AdminLoginPage extends JFrame {
     public JPasswordField getPasswordField() {
         return passwordField;
     }
+
+    public void changeLanguage(ResourceBundle resourceBundle){
+        adminWelcomeLabel.setText(resourceBundle.getString("adminWelcomeLabel"));
+        adminIdLabel.setText(resourceBundle.getString("adminIdLabel"));
+        passwordLabel.setText(resourceBundle.getString("passwordLabel"));
+        loginButton.setText(resourceBundle.getString("loginButton"));
+    }
+
 }

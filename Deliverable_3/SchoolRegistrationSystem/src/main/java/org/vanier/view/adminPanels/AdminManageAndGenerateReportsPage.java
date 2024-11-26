@@ -1,6 +1,7 @@
 package org.vanier.view.adminPanels;
 
 import javax.swing.*;
+import java.util.ResourceBundle;
 
 public class AdminManageAndGenerateReportsPage extends JFrame {
     private JButton returnToPreviousPageButton;
@@ -47,5 +48,11 @@ public class AdminManageAndGenerateReportsPage extends JFrame {
 
     public JButton getGenerateReportButton() {
         return generateReportButton;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle){
+        returnToPreviousPageButton.setText(resourceBundle.getString("returnToPreviousPageButton"));
+        manageButton.setText(resourceBundle.getString("manageButton"));
+        generateReportButton.setText(resourceBundle.getString("generateReportButton"));
     }
 }

@@ -1,12 +1,14 @@
 package org.vanier.view.adminPanels;
 
 import javax.swing.*;
+import java.util.ResourceBundle;
 
 public class AdminUpdateCoursePage extends JFrame {
     private JPanel updateCoursePage;
     private JButton returnToPreviousPageButton;
     private JTextField courseIdTextField, courseNumberField, courseSectionField, courseCapacityField, courseCreditsField, startTimeField, endTimeField, dayOfWeekField;
     private JButton updateButton;
+    private JLabel courseIdLabel;
 
     public AdminUpdateCoursePage() {
         setTitle("Update Course");
@@ -56,5 +58,11 @@ public class AdminUpdateCoursePage extends JFrame {
 
     public JButton getReturnToPreviousPageButton() {
         return returnToPreviousPageButton;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle){
+        returnToPreviousPageButton.setText(resourceBundle.getString("returnToPreviousPageButton"));
+        updateButton.setText(resourceBundle.getString("updateButton"));
+        courseIdLabel.setText(resourceBundle.getString("courseIdLabel"));
     }
 }

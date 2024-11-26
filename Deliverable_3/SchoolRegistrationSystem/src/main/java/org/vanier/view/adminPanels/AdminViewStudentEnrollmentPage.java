@@ -2,12 +2,14 @@ package org.vanier.view.adminPanels;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ResourceBundle;
 
 public class AdminViewStudentEnrollmentPage extends JFrame {
     private JTextField courseIdTextField;
     private JTextArea enrollmentTextArea;
     private JButton viewStudentEnrollmentButton;
     private JButton returnToPreviousPageButton;
+    private JLabel adminViewStudentEnrollmentPageLabel;
 
     public AdminViewStudentEnrollmentPage() {
         // Initialize the main panel
@@ -62,5 +64,11 @@ public class AdminViewStudentEnrollmentPage extends JFrame {
 
     public JButton getReturnToPreviousPageButton() {
         return returnToPreviousPageButton;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle){
+        viewStudentEnrollmentButton.setText(resourceBundle.getString("viewStudentEnrollmentButton"));
+        returnToPreviousPageButton.setText(resourceBundle.getString("returnToPreviousPageButton"));
+        adminViewStudentEnrollmentPageLabel.setText(resourceBundle.getString("adminViewStudentEnrollmentPageLabel"));
     }
 }

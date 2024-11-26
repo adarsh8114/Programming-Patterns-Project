@@ -1,6 +1,7 @@
 package org.vanier.view.adminPanels;
 
 import javax.swing.*;
+import java.util.ResourceBundle;
 
 public class AdminAddCoursePage extends JFrame {
     private JTextField courseIdTextField;
@@ -62,5 +63,12 @@ public class AdminAddCoursePage extends JFrame {
 
     public JPanel getAddCourseMenu() {
         return addCourseMenu;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle){
+        addCourseMenuLabel.setText(resourceBundle.getString("addCourseMenu"));
+        courseIdLabel.setText(resourceBundle.getString("courseIdLabel"));
+        returnToPreviousPageButton.setText(resourceBundle.getString("returnToPreviousPageButton"));
+        courseAddButton.setText(resourceBundle.getString("courseAddButton"));
     }
 }

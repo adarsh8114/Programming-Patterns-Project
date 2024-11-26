@@ -1,5 +1,8 @@
 package org.vanier.view;
 
+import org.vanier.model.RegistrationSystem;
+import org.vanier.view.adminPanels.*;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,6 +11,13 @@ public class AdminManagementView extends JFrame {
     private CardLayout cardLayout;
 
     private JPanel adminMainMenuPanel;
+
+    private AdminAddCoursePage adminAddCoursePage = new AdminAddCoursePage();
+    private AdminLoginPage adminLoginPage = new AdminLoginPage();
+    private AdminMainMenuPage adminMainMenuPage = new AdminMainMenuPage();
+    private AdminManageAndGenerateReportsPage adminManageAndGenerateReportsPage = new AdminManageAndGenerateReportsPage();
+    private AdminUpdateCoursePage adminUpdateCoursePage = new AdminUpdateCoursePage();
+    private AdminViewStudentEnrollmentPage adminViewStudentEnrollmentPage = new AdminViewStudentEnrollmentPage();
 
     public AdminManagementView() throws HeadlessException {
         setTitle("Admin Portal");
@@ -31,6 +41,13 @@ public class AdminManagementView extends JFrame {
         adminMainMenuPanel.add(deleteCourseButton);
         adminMainMenuPanel.add(viewEnrollmentsButton);
         adminMainMenuPanel.add(generateReportButton);
+
+        adminAddCoursePage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
+        adminLoginPage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
+        adminMainMenuPage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
+        adminManageAndGenerateReportsPage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
+        adminUpdateCoursePage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
+        adminViewStudentEnrollmentPage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
 
         // Add main menu panel to card layout
         mainPanel.add(adminMainMenuPanel, "adminMainMenu");

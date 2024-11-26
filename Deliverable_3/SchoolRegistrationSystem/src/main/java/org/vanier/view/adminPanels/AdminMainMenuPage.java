@@ -1,6 +1,7 @@
 package org.vanier.view.adminPanels;
 
 import javax.swing.*;
+import java.util.ResourceBundle;
 
 public class AdminMainMenuPage extends JFrame {
     private JLabel optionsLabel;
@@ -79,5 +80,18 @@ public class AdminMainMenuPage extends JFrame {
 
     public JButton getGenerateReportsOnStudentButton() {
         return generateReportsOnStudentButton;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle){
+        optionsLabel.setText(resourceBundle.getString("optionsLabel"));
+        welcomeLabel.setText(resourceBundle.getString("welcomeLabel"));
+        typeOfUserLabel.setText(resourceBundle.getString("typeOfUserLabel"));
+        addCourseButton.setText(resourceBundle.getString("addCourseButton"));
+        updateCourseButton.setText(resourceBundle.getString("updateCourseButton"));
+        this.deleteCourseButton.setText(resourceBundle.getString("deleteCourseButton"));
+        this.generateReportsOnCourseButton.setText(resourceBundle.getString("generateReportsOnCourseButton"));
+        this.manageStudentEnrollmentsButton.setText(resourceBundle.getString("manageStudentEnrollmentsButton"));
+        this.viewStudentEnrollmentsButton.setText(resourceBundle.getString("viewStudentEnrollmentsButton"));
+        this.generateReportsOnStudentButton.setText(resourceBundle.getString("generateReportsOnStudentButton"));
     }
 }
