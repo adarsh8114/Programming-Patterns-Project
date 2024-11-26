@@ -60,12 +60,7 @@ public class StudentModel extends PersonModel {
     }
 
     public void setNumberCoursesRegistered(int numberCoursesRegistered) {
-        if (numberCoursesRegistered >= 4) {
-            isFullTime = true;
-        } else {
-            isFullTime = false;
-        }
-
+        isFullTime = numberCoursesRegistered >= 4;
         this.numberCoursesRegistered = numberCoursesRegistered;
     }
 

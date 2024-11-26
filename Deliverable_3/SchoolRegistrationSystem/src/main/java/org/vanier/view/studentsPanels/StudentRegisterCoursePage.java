@@ -1,6 +1,7 @@
 package org.vanier.view.studentsPanels;
 
 import javax.swing.*;
+import java.util.ResourceBundle;
 
 public class StudentRegisterCoursePage extends JFrame{
     private JPanel StudentRegisterCoursePanel;
@@ -34,5 +35,12 @@ public class StudentRegisterCoursePage extends JFrame{
 
     public JLabel getErrorLabel() {
         return ErrorLabel;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle) {
+        TitleLabel.setText(resourceBundle.getString("registerForCourseMenuTitle"));
+        CourseIdLabel.setText(resourceBundle.getString("courseIdLabel"));
+        RegisterForCourseButton.setText(resourceBundle.getString("registerButton"));
+        ReturnButton.setText(resourceBundle.getString("returnToPreviousPageButtonText"));
     }
 }

@@ -1,7 +1,7 @@
 package org.vanier.controller;
 
 import org.junit.Test;
-import org.vanier.RegistrationSystem;
+import org.vanier.model.RegistrationSystem;
 import org.vanier.model.StudentModel;
 
 import java.util.List;

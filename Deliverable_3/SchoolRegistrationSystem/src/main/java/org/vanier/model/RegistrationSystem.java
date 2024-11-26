@@ -1,12 +1,9 @@
-package org.vanier;
-
-import org.vanier.model.AdminModel;
-import org.vanier.model.CourseModel;
-import org.vanier.model.StudentModel;
-import org.vanier.model.TeacherModel;
+package org.vanier.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class RegistrationSystem {
     private List<StudentModel> studentList;
@@ -14,7 +11,12 @@ public class RegistrationSystem {
     private List<TeacherModel> teacherList;
     private List<AdminModel> adminList;
     private static RegistrationSystem registrationSystem;
+    private Locale locale = new Locale("en","CA");
+    private ResourceBundle resourceBundle = ResourceBundle.getBundle("Messages", locale);
 
+    public static void main(String[] args) {
+        System.out.println(getInstance().resourceBundle.getString("welcomeStudentLoginPage"));
+    }
     private RegistrationSystem() {
         studentList = new ArrayList<>();
         courseList = new ArrayList<>();
@@ -78,5 +80,18 @@ public class RegistrationSystem {
 
     public List<TeacherModel> getTeacherList() {
         return teacherList;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+        resourceBundle = ResourceBundle.getBundle("Messages", locale);
+    }
+
+    public ResourceBundle getResourceBundle() {
+        return resourceBundle;
     }
 }

@@ -1,6 +1,7 @@
 package org.vanier.view;
 
 
+import org.vanier.model.RegistrationSystem;
 import org.vanier.view.studentsPanels.*;
 
 import javax.swing.*;
@@ -32,6 +33,12 @@ public class StudentRegistrationView extends JFrame {
         studentRegisterCoursePage = new StudentRegisterCoursePage();
         studentViewSchedulePage = new StudentViewSchedulePage();
         studentDropCoursePage = new StudentDropCoursePage();
+
+        studentLoginPage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
+        studentMainMenuPage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
+        studentRegisterCoursePage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
+        studentViewSchedulePage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
+        studentDropCoursePage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
 
         mainPanel.add(studentLoginPage.getStudentLoginPanel(), "login");
         mainPanel.add(studentMainMenuPage.getStudentMainMenuPanel(), "mainMenu");

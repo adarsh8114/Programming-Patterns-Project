@@ -1,6 +1,7 @@
 package org.vanier.view.studentsPanels;
 
 import javax.swing.*;
+import java.util.ResourceBundle;
 
 public class StudentMainMenuPage extends JFrame{
     private JPanel StudentMainMenuPanel;
@@ -35,5 +36,13 @@ public class StudentMainMenuPage extends JFrame{
 
     public JLabel getStudentNameLabel() {
         return StudentNameLabel;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle) {
+        TitleLabel.setText(resourceBundle.getString("welcome"));
+        InstructionLabel.setText(resourceBundle.getString("selectFollowingOptionsLabel"));
+        RegisterButton.setText(resourceBundle.getString("registerForCourseButton"));
+        DropButton.setText(resourceBundle.getString("dropCourseButton"));
+        CourseScheduleButton.setText(resourceBundle.getString("viewCourseScheduleButton"));
     }
 }

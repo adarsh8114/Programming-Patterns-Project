@@ -1,14 +1,9 @@
 package org.vanier.controller;
 
-import org.vanier.RegistrationSystem;
-import org.vanier.model.StudentModel;
+import org.vanier.model.RegistrationSystem;
 import org.vanier.model.TeacherModel;
 import org.vanier.model.CourseModel;
 import org.vanier.view.TeacherView;
-import org.vanier.view.teachersPanels.TeacherLoginPage;
-import org.vanier.view.teachersPanels.TeacherMainMenuPage;
-import org.vanier.view.teachersPanels.TeacherViewCourseDetailsPage;
-import org.vanier.view.teachersPanels.TeacherViewSchedulePage;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
