@@ -1,9 +1,7 @@
 package org.vanier.view;
 
-import org.vanier.view.teachersPanels.TeacherLoginPage;
-import org.vanier.view.teachersPanels.TeacherMainMenuPage;
-import org.vanier.view.teachersPanels.TeacherViewCourseDetailsPage;
-import org.vanier.view.teachersPanels.TeacherViewSchedulePage;
+import org.vanier.model.RegistrationSystem;
+import org.vanier.view.teachersPanels.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,8 +12,9 @@ public class TeacherView extends JFrame {
 
     private TeacherLoginPage teacherLoginPage;
     private TeacherMainMenuPage teacherMainMenuPage;
-    private TeacherViewCourseDetailsPage teacherViewCourseDetailsPage;
+    private TeacherViewCourseTeachingPage teacherViewCourseTeachingPage;
     private TeacherViewSchedulePage teacherViewSchedulePage;
+    private TeacherViewCourseDetailsPage teacherViewCourseDetailsPage;
 
     public TeacherView() throws HeadlessException {
         setTitle("Teacher Portal");
@@ -29,14 +28,21 @@ public class TeacherView extends JFrame {
         // Initialize all the teacher pages
         teacherLoginPage = new TeacherLoginPage();
         teacherMainMenuPage = new TeacherMainMenuPage();
-        teacherViewCourseDetailsPage = new TeacherViewCourseDetailsPage();
+        teacherViewCourseTeachingPage = new TeacherViewCourseTeachingPage();
         teacherViewSchedulePage = new TeacherViewSchedulePage();
+        teacherViewCourseDetailsPage = new TeacherViewCourseDetailsPage();
+
+        teacherLoginPage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
+        teacherMainMenuPage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
+        teacherViewCourseTeachingPage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
+        teacherViewSchedulePage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
 
         // Add pages to the CardLayout panel with unique names
         mainPanel.add(teacherLoginPage.getTeacherLoginPagePanel(), "login");
         mainPanel.add(teacherMainMenuPage.getTeacherMainMenuPanel(), "mainMenu");
-        mainPanel.add(teacherViewCourseDetailsPage.getTeacherViewCoursePanel(), "viewCourseDetails"); // updated panel name
+        mainPanel.add(teacherViewCourseTeachingPage.getTeacherViewCoursePanel(), "viewCourseTeaching"); // updated panel name
         mainPanel.add(teacherViewSchedulePage.getTeacherViewSchedulePanel(), "viewSchedule");
+        mainPanel.add(teacherViewCourseDetailsPage.getTeacherCourseDetailsPanel(),"viewCourseDetails");
 
         // Add the mainPanel to the JFrame
         add(mainPanel);
@@ -56,13 +62,15 @@ public class TeacherView extends JFrame {
         cardLayout.show(mainPanel, "mainMenu");
     }
 
-    public void showViewCourseDetailsPanel() {
-        cardLayout.show(mainPanel, "viewCourseDetails"); // updated panel name
+    public void showViewCourseTeachingPanel() {
+        cardLayout.show(mainPanel, "viewCourseTeaching"); // updated panel name
     }
 
     public void showViewSchedulePanel() {
         cardLayout.show(mainPanel, "viewSchedule");
     }
+
+    public void showViewCourseDetailsPanel() {cardLayout.show(mainPanel, "viewCourseDetails");}
 
     // Getters for the individual pages, in case they are needed
     public TeacherLoginPage getTeacherLoginPage() {
@@ -73,11 +81,15 @@ public class TeacherView extends JFrame {
         return teacherMainMenuPage;
     }
 
-    public TeacherViewCourseDetailsPage getTeacherViewCourseDetailsPage() {
-        return teacherViewCourseDetailsPage;
+    public TeacherViewCourseTeachingPage getTeacherViewCourseTeachingPage() {
+        return teacherViewCourseTeachingPage;
     }
 
     public TeacherViewSchedulePage getTeacherViewSchedulePage() {
         return teacherViewSchedulePage;
+    }
+
+    public TeacherViewCourseDetailsPage getTeacherViewCourseDetailsPage() {
+        return teacherViewCourseDetailsPage;
     }
 }
