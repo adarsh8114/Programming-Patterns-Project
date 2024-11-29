@@ -1,54 +1,23 @@
 package org.vanier.view.adminPanels;
 
 import javax.swing.*;
-import java.awt.*;
+import java.util.ResourceBundle;
 
-public class AdminAddCoursePage extends JPanel {
+public class AdminAddCoursePage extends JFrame {
     private JTextField courseIdTextField;
     private JLabel addCourseMenuLabel;
+    private JPanel addCourseMenu;
     private JLabel courseIdLabel;
     private JTextField courseNumberField, courseSectionField, courseCapacityField, courseCreditsField, startTimeField, endTimeField, dayOfWeekField;
     private JButton courseAddButton;
     private JButton returnToPreviousPageButton;
 
     public AdminAddCoursePage() {
-        setLayout(new GridLayout(9, 2, 10, 10)); // Arrange components in a grid layout
-
-        // Initialize UI components
-        addCourseMenuLabel = new JLabel("Add Course");
-        courseIdLabel = new JLabel("Course ID:");
-        courseIdTextField = new JTextField();
-        courseNumberField = new JTextField();
-        courseSectionField = new JTextField();
-        courseCapacityField = new JTextField();
-        courseCreditsField = new JTextField();
-        startTimeField = new JTextField();
-        endTimeField = new JTextField();
-        dayOfWeekField = new JTextField();
-        courseAddButton = new JButton("Add Course");
-        returnToPreviousPageButton = new JButton("Back");
-
-        // Add components to the panel
-        add(addCourseMenuLabel);
-        add(new JLabel()); // Empty cell for spacing
-        add(courseIdLabel);
-        add(courseIdTextField);
-        add(new JLabel("Course Number:"));
-        add(courseNumberField);
-        add(new JLabel("Course Section:"));
-        add(courseSectionField);
-        add(new JLabel("Course Capacity:"));
-        add(courseCapacityField);
-        add(new JLabel("Course Credits:"));
-        add(courseCreditsField);
-        add(new JLabel("Start Time:"));
-        add(startTimeField);
-        add(new JLabel("End Time:"));
-        add(endTimeField);
-        add(new JLabel("Day of Week:"));
-        add(dayOfWeekField);
-        add(courseAddButton);
-        add(returnToPreviousPageButton);
+        setTitle("Add Course");
+        setContentPane(addCourseMenu);
+        setSize(400, 300);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     // Getters for UI elements that the controller will interact with
@@ -90,5 +59,16 @@ public class AdminAddCoursePage extends JPanel {
 
     public JButton getReturnToPreviousPageButton() {
         return returnToPreviousPageButton;
+    }
+
+    public JPanel getAddCourseMenu() {
+        return addCourseMenu;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle){
+        addCourseMenuLabel.setText(resourceBundle.getString("addCourseMenu"));
+        courseIdLabel.setText(resourceBundle.getString("courseIdLabel"));
+        returnToPreviousPageButton.setText(resourceBundle.getString("returnToPreviousPageButton"));
+        courseAddButton.setText(resourceBundle.getString("courseAddButton"));
     }
 }

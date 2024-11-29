@@ -2,16 +2,19 @@ package org.vanier.view.adminPanels;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ResourceBundle;
 
-public class AdminViewStudentEnrollmentPage extends JPanel {
+public class AdminViewStudentEnrollmentPage extends JFrame {
     private JTextField courseIdTextField;
     private JTextArea enrollmentTextArea;
     private JButton viewStudentEnrollmentButton;
     private JButton returnToPreviousPageButton;
+    private JLabel adminViewStudentEnrollmentPageLabel;
 
     public AdminViewStudentEnrollmentPage() {
-        // Set layout for the main panel
-        setLayout(new BorderLayout());
+        // Initialize the main panel
+        JPanel viewEnrollmentPanel = new JPanel();
+        viewEnrollmentPanel.setLayout(new BorderLayout());
 
         // Initialize components
         courseIdTextField = new JTextField(10);
@@ -34,9 +37,16 @@ public class AdminViewStudentEnrollmentPage extends JPanel {
         bottomPanel.add(returnToPreviousPageButton);
 
         // Add sub-panels to the main panel
-        add(topPanel, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
-        add(bottomPanel, BorderLayout.SOUTH);
+        viewEnrollmentPanel.add(topPanel, BorderLayout.NORTH);
+        viewEnrollmentPanel.add(scrollPane, BorderLayout.CENTER);
+        viewEnrollmentPanel.add(bottomPanel, BorderLayout.SOUTH);
+
+        // Set the main panel as the content pane
+        setTitle("View Student Enrollment");
+        setContentPane(viewEnrollmentPanel);
+        setSize(500, 400);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     // Getters for UI components to be accessed by the controller
@@ -54,5 +64,11 @@ public class AdminViewStudentEnrollmentPage extends JPanel {
 
     public JButton getReturnToPreviousPageButton() {
         return returnToPreviousPageButton;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle){
+        viewStudentEnrollmentButton.setText(resourceBundle.getString("viewStudentEnrollmentButton"));
+        returnToPreviousPageButton.setText(resourceBundle.getString("returnToPreviousPageButton"));
+        adminViewStudentEnrollmentPageLabel.setText(resourceBundle.getString("adminViewStudentEnrollmentPageLabel"));
     }
 }

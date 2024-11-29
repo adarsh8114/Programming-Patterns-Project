@@ -1,17 +1,19 @@
 package org.vanier.view.adminPanels;
 
 import javax.swing.*;
-import java.awt.*;
+import java.util.ResourceBundle;
 
-public class AdminManageAndGenerateReportsPage extends JPanel {
+public class AdminManageAndGenerateReportsPage extends JFrame {
     private JButton returnToPreviousPageButton;
     private JTextField studentIdTextField;
     private JButton manageButton;
     private JButton generateReportButton;
 
     public AdminManageAndGenerateReportsPage() {
-        // Set layout
-        setLayout(new GridLayout(3, 2, 10, 10)); // Grid layout with rows and spacing
+        setTitle("Manage and Generate Reports");
+        setSize(400, 200);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
 
         // Initialize components
         returnToPreviousPageButton = new JButton("Return");
@@ -19,13 +21,16 @@ public class AdminManageAndGenerateReportsPage extends JPanel {
         manageButton = new JButton("Manage");
         generateReportButton = new JButton("Generate Report");
 
-        // Add components to the panel
-        add(new JLabel("Student ID:"));
-        add(studentIdTextField);
-        add(manageButton);
-        add(generateReportButton);
-        add(new JLabel()); // Spacer
-        add(returnToPreviousPageButton);
+        // Layout setup
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Student ID:"));
+        panel.add(studentIdTextField);
+        panel.add(manageButton);
+        panel.add(generateReportButton);
+        panel.add(returnToPreviousPageButton);
+
+        setContentPane(panel);
+        setVisible(true);
     }
 
     // Getters for the UI elements to be accessed by the controller
@@ -43,5 +48,11 @@ public class AdminManageAndGenerateReportsPage extends JPanel {
 
     public JButton getGenerateReportButton() {
         return generateReportButton;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle){
+        returnToPreviousPageButton.setText(resourceBundle.getString("returnToPreviousPageButton"));
+        manageButton.setText(resourceBundle.getString("manageButton"));
+        generateReportButton.setText(resourceBundle.getString("generateReportButton"));
     }
 }
