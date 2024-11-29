@@ -1,32 +1,41 @@
 package org.vanier.view.teachersPanels;
 
 import javax.swing.*;
-import java.util.ResourceBundle;
 
 public class TeacherViewCourseDetailsPage {
-    private JLabel courseSelectedLabel;
-    private JTable courseDetailTable;
+    private JLabel courseIDLabel;
+    private JTextField idTextField;
+    private JButton idButton;
+    private JTable studentListTable;
     private JButton returnButton;
-    private JPanel teacherCourseDetailsPanel;
+    private JPanel teacherViewCoursePanel;
+    private JLabel errorLabel;
 
-    public JPanel getTeacherCourseDetailsPanel() {
-        return teacherCourseDetailsPanel;
+    public JLabel getCourseIDLabel() {
+        return courseIDLabel;
     }
 
-    public JLabel getCourseSelectedLabel() {
-        return courseSelectedLabel;
+    public JTextField getIdTextField() {
+        return idTextField;
     }
 
-    public JTable getCourseDetailTable() {
-        return courseDetailTable;
+    public JButton getIdButton() {
+        return idButton;
+    }
+
+    public JTable getStudentListTable() {
+        return studentListTable;
     }
 
     public JButton getReturnButton() {
         return returnButton;
     }
 
-    public void changeLanguage(ResourceBundle resourceBundle) {
-        returnButton.setText("teacherViewDetailsReturnButton");
+    public JPanel getTeacherViewCoursePanel() {
+        return teacherViewCoursePanel;
+    }
 
+    public JLabel getErrorLabel() {
+        return errorLabel;
     }
 }

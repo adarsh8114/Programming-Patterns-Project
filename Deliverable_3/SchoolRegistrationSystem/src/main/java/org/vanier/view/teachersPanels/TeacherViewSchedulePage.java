@@ -1,7 +1,6 @@
 package org.vanier.view.teachersPanels;
 
 import javax.swing.*;
-import java.util.ResourceBundle;
 
 public class TeacherViewSchedulePage {
     private JLabel viewCourseLabel;
@@ -19,10 +18,5 @@ public class TeacherViewSchedulePage {
 
     public JPanel getTeacherViewSchedulePanel() {
         return teacherViewSchedulePanel;
-    }
-
-    public void changeLanguage(ResourceBundle resourceBundle) {
-        viewCourseLabel.setText(resourceBundle.getString("teacherViewCourseLabel"));
-        returnButton.setText(resourceBundle.getString("teacherViewScheduleReturnButton"));
     }
 }
