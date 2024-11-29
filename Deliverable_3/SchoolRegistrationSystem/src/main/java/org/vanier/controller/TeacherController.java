@@ -51,7 +51,7 @@ public class TeacherController {
         });
 
         // Return buttons in different panels to go back to main menu
-        view.getTeacherViewCourseDetailsPage().getReturnButton().addActionListener(new ActionListener() {
+        view.getTeacherViewCourseTeachingPage().getReturnButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 view.showMainMenuPanel();
@@ -65,6 +65,7 @@ public class TeacherController {
             }
         });
     }
+
 
     /**
      * makes sure the login information is valid before opening the main menu.
@@ -83,7 +84,7 @@ public class TeacherController {
             view.getTeacherMainMenuPage().getNameLabel().setText(teacher.getFullName());
             view.showMainMenuPanel();
         } else {
-            view.getTeacherLoginPage().getErrorLabel().setText("Error! Incorrect Teacher ID or Password");
+            view.getTeacherLoginPage().getErrorLabel().setText("no");
         }
     }
 
@@ -102,18 +103,12 @@ public class TeacherController {
             }
         }
         if (id == -20) {
-            CourseModel historyCourse = new CourseModel("HIST101", 1, 30, 3, 9, 11, "Monday");
-            CourseModel historyCourse2 = new CourseModel("HIST102", 1, 30, 3, 11, 1, "Wednesday");
-
             List<CourseModel> coursesTeaching = new ArrayList<>();
-            coursesTeaching.add(historyCourse);
-            coursesTeaching.add(historyCourse2);
-            // Create TeacherModel with the courses they are teaching
-            return new TeacherModel("Sothearoum", "Thao", "438-725-8966", "sothearoum@gmail.com", "yeeteronii", coursesTeaching);
+            return new TeacherModel("Sothearoum", "Thao", "438-725-8966",
+                    "sothearoum@gmail.com", "yeeteronii", coursesTeaching);
         }
         return null;
     }
-
     /**
      * method to display schedule in the teacher view schedule panel
      */
@@ -127,7 +122,7 @@ public class TeacherController {
      * displays course details in the teacher course details page
      */
     private void showCourseDetails() {
-        view.showViewCourseDetailsPanel();
+        view.showViewCourseTeachingPanel();
     }
 
     /**

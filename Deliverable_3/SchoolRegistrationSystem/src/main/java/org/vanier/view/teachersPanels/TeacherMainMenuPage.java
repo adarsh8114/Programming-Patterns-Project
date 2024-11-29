@@ -1,6 +1,7 @@
 package org.vanier.view.teachersPanels;
 
 import javax.swing.*;
+import java.util.ResourceBundle;
 
 public class TeacherMainMenuPage {
     private JLabel welcomeLabel;
@@ -43,5 +44,14 @@ public class TeacherMainMenuPage {
 
     public JLabel getSelectionLabel() {
         return selectionLabel;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle) {
+        welcomeLabel.setText(resourceBundle.getString("teacherWelcomeLabel"));
+        teacherLabel.setText(resourceBundle.getString("teacherTeacherLabel"));
+        courseDetailsButton.setText(resourceBundle.getString("teacherCourseDetailsButton"));
+        viewScheduleButton.setText(resourceBundle.getString("teacherViewScheduleButton"));
+        logOutButton.setText(resourceBundle.getString("teacherLogOutButton"));
+        selectionLabel.setText(resourceBundle.getString("teacherSelectionLabel"));
     }
 }

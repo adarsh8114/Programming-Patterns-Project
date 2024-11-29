@@ -1,10 +1,10 @@
 package org.vanier.view.adminPanels;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class AdminMainMenuPage extends JFrame {
+public class AdminMainMenuPage extends JPanel {
     private JLabel optionsLabel;
-    private JPanel mainPanel;
     private JLabel welcomeLabel;
     private JLabel adminNameLabel;
     private JLabel typeOfUserLabel;
@@ -17,14 +17,14 @@ public class AdminMainMenuPage extends JFrame {
     private JButton generateReportsOnStudentButton;
 
     public AdminMainMenuPage() {
-        setTitle("Admin Main Menu");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        // Set layout
+        setLayout(new GridLayout(10, 1, 10, 10)); // Grid layout with spacing between components
 
-        mainPanel = new JPanel();
-        optionsLabel = new JLabel("Options:");
-        welcomeLabel = new JLabel("Welcome, Admin!");
-        adminNameLabel = new JLabel("Admin Name: [Name]");
-        typeOfUserLabel = new JLabel("User Type: Administrator");
+        // Initialize components
+        welcomeLabel = new JLabel("Welcome, Admin!", SwingConstants.CENTER);
+        adminNameLabel = new JLabel("Admin Name: [Name]", SwingConstants.CENTER);
+        typeOfUserLabel = new JLabel("User Type: Administrator", SwingConstants.CENTER);
+        optionsLabel = new JLabel("Options:", SwingConstants.CENTER);
 
         addCourseButton = new JButton("Add Course");
         updateCourseButton = new JButton("Update Course");
@@ -34,22 +34,18 @@ public class AdminMainMenuPage extends JFrame {
         viewStudentEnrollmentsButton = new JButton("View Student Enrollments");
         generateReportsOnStudentButton = new JButton("Generate Reports on Student");
 
-        mainPanel.add(welcomeLabel);
-        mainPanel.add(adminNameLabel);
-        mainPanel.add(typeOfUserLabel);
-        mainPanel.add(optionsLabel);
-        mainPanel.add(addCourseButton);
-        mainPanel.add(updateCourseButton);
-        mainPanel.add(deleteCourseButton);
-        mainPanel.add(generateReportsOnCourseButton);
-        mainPanel.add(manageStudentEnrollmentsButton);
-        mainPanel.add(viewStudentEnrollmentsButton);
-        mainPanel.add(generateReportsOnStudentButton);
-
-        setContentPane(mainPanel);
-        setSize(500, 300);
-        setLocationRelativeTo(null);
-        setVisible(true);
+        // Add components to the panel
+        add(welcomeLabel);
+        add(adminNameLabel);
+        add(typeOfUserLabel);
+        add(optionsLabel);
+        add(addCourseButton);
+        add(updateCourseButton);
+        add(deleteCourseButton);
+        add(generateReportsOnCourseButton);
+        add(manageStudentEnrollmentsButton);
+        add(viewStudentEnrollmentsButton);
+        add(generateReportsOnStudentButton);
     }
 
     // Getters for UI elements to be accessed in the controller

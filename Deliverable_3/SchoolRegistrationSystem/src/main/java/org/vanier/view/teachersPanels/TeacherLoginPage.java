@@ -1,6 +1,7 @@
 package org.vanier.view.teachersPanels;
 
 import javax.swing.*;
+import java.util.ResourceBundle;
 
 public class TeacherLoginPage {
     private JTextField teacherIDTextField;
@@ -30,5 +31,12 @@ public class TeacherLoginPage {
 
     public JLabel getErrorLabel() {
         return errorLabel;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle) {
+        loginPageLabel.setText(resourceBundle.getString("teacherLoginPageLabel"));
+        teacherIdLabel.setText(resourceBundle.getString("teacherIDLabel"));
+        passwordLabel.setText(resourceBundle.getString("passwordTeacherLabel"));
+        loginConfirmButton.setText(resourceBundle.getString("teacherLoginConfirmButton"));
     }
 }

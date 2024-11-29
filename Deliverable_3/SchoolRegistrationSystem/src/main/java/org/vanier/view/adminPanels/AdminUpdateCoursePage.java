@@ -1,20 +1,55 @@
 package org.vanier.view.adminPanels;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class AdminUpdateCoursePage extends JFrame {
-    private JPanel updateCoursePage;
-    private JButton returnToPreviousPageButton;
-    private JTextField courseIdTextField, courseNumberField, courseSectionField, courseCapacityField, courseCreditsField, startTimeField, endTimeField, dayOfWeekField;
+public class AdminUpdateCoursePage extends JPanel {
+    private JTextField courseIdTextField;
+    private JTextField courseNumberField;
+    private JTextField courseSectionField;
+    private JTextField courseCapacityField;
+    private JTextField courseCreditsField;
+    private JTextField startTimeField;
+    private JTextField endTimeField;
+    private JTextField dayOfWeekField;
     private JButton updateButton;
+    private JButton returnToPreviousPageButton;
 
     public AdminUpdateCoursePage() {
-        setTitle("Update Course");
-        setContentPane(updateCoursePage);
-        setSize(400, 300);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setVisible(true);
+        // Set layout
+        setLayout(new GridLayout(10, 2, 10, 10)); // Grid layout with spacing
+
+        // Initialize components
+        courseIdTextField = new JTextField(20);
+        courseNumberField = new JTextField(20);
+        courseSectionField = new JTextField(20);
+        courseCapacityField = new JTextField(20);
+        courseCreditsField = new JTextField(20);
+        startTimeField = new JTextField(20);
+        endTimeField = new JTextField(20);
+        dayOfWeekField = new JTextField(20);
+        updateButton = new JButton("Update Course");
+        returnToPreviousPageButton = new JButton("Return");
+
+        // Add components to the panel
+        add(new JLabel("Course ID:"));
+        add(courseIdTextField);
+        add(new JLabel("Course Number:"));
+        add(courseNumberField);
+        add(new JLabel("Course Section:"));
+        add(courseSectionField);
+        add(new JLabel("Course Capacity:"));
+        add(courseCapacityField);
+        add(new JLabel("Course Credits:"));
+        add(courseCreditsField);
+        add(new JLabel("Start Time:"));
+        add(startTimeField);
+        add(new JLabel("End Time:"));
+        add(endTimeField);
+        add(new JLabel("Day of Week:"));
+        add(dayOfWeekField);
+        add(updateButton);
+        add(returnToPreviousPageButton);
     }
 
     // Getters for UI components that the controller needs to access
