@@ -197,9 +197,18 @@ public class StudentRegistrationController {
             if (courseModel.getCourseId() == id && !model.getRegisteredCourses().contains(courseModel)
                     && !courseModel.isAnyConflictingCourse(model.getRegisteredCourses())) {
                 view.getStudentRegisterCoursePage().getErrorLabel().setText("");
+
+                int studIdx = RegistrationSystem.getInstance().getStudentList().indexOf(model);
                 model.getRegisteredCourses().add(courseModel);
+                RegistrationSystem.getInstance().getStudentList().set(studIdx,model);
                 model.setNumberCoursesRegistered(model.getNumberCoursesRegistered() + 1);
+
+                int courseIdx = RegistrationSystem.getInstance().getCourseList().indexOf(courseModel);
                 courseModel.getEnrolledStudents().add(model);
+                RegistrationSystem.getInstance().getCourseList().set(courseIdx,courseModel);
+
+                DatabaseController.registerStudentToCourse(model.getId(), courseModel.getCourseId());
+
                 view.showMainMenuPanel();
             }
         }
@@ -221,9 +230,18 @@ public class StudentRegistrationController {
         for (CourseModel courseModel : model.getRegisteredCourses()) {
             if (model.getRegisteredCourses().contains(courseModel)) {
                 view.getStudentDropCoursePage().getErrorLabel().setText("");
+
+                int studIdx = RegistrationSystem.getInstance().getStudentList().indexOf(model);
                 model.getRegisteredCourses().remove(courseModel);
+                RegistrationSystem.getInstance().getStudentList().set(studIdx,model);
                 model.setNumberCoursesRegistered(model.getNumberCoursesRegistered() - 1);
+
+                int courseIdx = RegistrationSystem.getInstance().getCourseList().indexOf(courseModel);
                 courseModel.getEnrolledStudents().remove(model);
+                RegistrationSystem.getInstance().getCourseList().set(courseIdx,courseModel);
+
+                DatabaseController.removeStudentFromRegistered(model.getId(), courseModel.getCourseId());
+
                 view.showMainMenuPanel();
             }
         }

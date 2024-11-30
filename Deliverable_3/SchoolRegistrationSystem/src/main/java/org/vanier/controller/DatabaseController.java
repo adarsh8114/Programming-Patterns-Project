@@ -1,10 +1,13 @@
 package org.vanier.controller;
 
+import org.vanier.factory.CourseFactory;
 import org.vanier.model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class DatabaseController {
@@ -68,9 +71,10 @@ public class DatabaseController {
                         COURSE_CAPACITY INTEGER,
                         CURRENT_ENROLLMENT_NUMBER INTEGER,
                         COURSE_CREDITS INTEGER,
-                        COURSE_TIME TEXT,
-                        ONLINE_COURSE_LINK TEXT,
-                        COURSE_ROOM_NUMBER TEXT,
+                        COURSE_START_TIME TEXT,
+                        COURSE_END_TIME TEXT,
+                        COURSE_DAY_OF_WEEK TEXT,
+                        ONLINE_LOCATION TEXT,
                         TEACHER_ID INTEGER,
                         FOREIGN KEY (TEACHER_ID) REFERENCES Teacher(TEACHER_ID)
                     )
@@ -184,29 +188,41 @@ public class DatabaseController {
     }
 
     // Add Course
-    public static void addCourse(int courseNumber, String type, int section, int capacity, int currentEnrollment, int credits, String time, String link, String roomNumber, int teacherId) {
+    public static void addCourse(int courseId, int courseNumber, String type, int section, int capacity, int currentEnrollment,
+                                 int credits, String startTime, String endTime, String dayOfWeek,
+                                 String location, int teacherId) {
         String sql = """
-                    INSERT INTO Course (COURSE_NUMBER, COURSE_TYPE, COURSE_SECTION, COURSE_CAPACITY, CURRENT_ENROLLMENT_NUMBER, COURSE_CREDITS, COURSE_TIME, ONLINE_COURSE_LINK, COURSE_ROOM_NUMBER, TEACHER_ID)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """;
+                INSERT INTO Course (
+                    COURSE_ID, COURSE_NUMBER, COURSE_TYPE, COURSE_SECTION, COURSE_CAPACITY, 
+                    CURRENT_ENROLLMENT_NUMBER, COURSE_CREDITS, COURSE_START_TIME, COURSE_END_TIME, 
+                    COURSE_DAY_OF_WEEK, LOCATION, TEACHER_ID
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """;
 
         WRITE_LOCK.lock();
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, courseNumber);
-            preparedStatement.setString(2, type);
-            preparedStatement.setInt(3, section);
-            preparedStatement.setInt(4, capacity);
-            preparedStatement.setInt(5, currentEnrollment);
-            preparedStatement.setInt(6, credits);
-            preparedStatement.setString(7, time);
-            preparedStatement.setString(8, link);
-            preparedStatement.setString(9, roomNumber);
-            preparedStatement.setInt(10, teacherId);
+
+            // Map each parameter to the corresponding column
+            preparedStatement.setInt(1, courseId);         // COURSE_ID
+            preparedStatement.setInt(2, courseNumber);     // COURSE_NUMBER
+            preparedStatement.setString(3, type);         // COURSE_TYPE
+            preparedStatement.setInt(4, section);         // COURSE_SECTION
+            preparedStatement.setInt(5, capacity);        // COURSE_CAPACITY
+            preparedStatement.setInt(6, currentEnrollment); // CURRENT_ENROLLMENT_NUMBER
+            preparedStatement.setInt(7, credits);         // COURSE_CREDITS
+            preparedStatement.setString(8, startTime);    // COURSE_START_TIME
+            preparedStatement.setString(9, endTime);      // COURSE_END_TIME
+            preparedStatement.setString(10, dayOfWeek);   // COURSE_DAY_OF_WEEK
+            preparedStatement.setString(11, location);    // LOCATION
+            preparedStatement.setInt(12, teacherId);      // TEACHER_ID
+
+            // Execute the query
             preparedStatement.executeUpdate();
             System.out.println("Course added successfully!");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error adding course: " + e.getMessage());
         } finally {
             WRITE_LOCK.unlock();
         }
@@ -320,70 +336,142 @@ public class DatabaseController {
 
     // Read all Students
     public static List<StudentModel> readStudents() {
-        String sql = "SELECT * FROM Student"; // Adjust this query to match your database schema.
-        List<StudentModel> students = new ArrayList<>();
+        String query = """
+            SELECT students.STUDENT_ID, students.FIRST_NAME, students.LAST_NAME, students.PHONE_NUMBER, 
+                   students.EMAIL_ADDRESS, students.PASSWORD, students.NUMBER_COURSES_REGISTERED, students.IS_FULL_TIME,
+                   courses.COURSE_ID, courses.COURSE_NUMBER, courses.COURSE_TYPE, courses.COURSE_SECTION,
+                   courses.COURSE_CAPACITY, courses.CURRENT_ENROLLMENT_NUMBER, courses.COURSE_CREDITS,
+                   courses.COURSE_START_TIME, courses.COURSE_END_TIME, courses.COURSE_DAY_OF_WEEK,
+                   courses.ONLINE_LOCATION
+            FROM Student students
+            JOIN Registered registered ON students.STUDENT_ID = registered.STUDENT_ID
+            JOIN Course courses ON registered.COURSE_NUMBER = courses.COURSE_NUMBER
+            """;
 
+        List<StudentModel> studentList = new ArrayList<>();
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery(sql)) {
-
+             ResultSet rs = statement.executeQuery(query)) {
             while (rs.next()) {
-                // Create a new StudentModel object
-                StudentModel student = new StudentModel(
-                        rs.getString("FIRST_NAME"),
-                        rs.getString("LAST_NAME"),
-                        rs.getString("PHONE_NUMBER"),
-                        rs.getString("EMAIL_ADDRESS"),
-                        rs.getString("PASSWORD")
+                int studentId = rs.getInt("STUDENT_ID");
+                String firstName = rs.getString("FIRST_NAME");
+                String lastName = rs.getString("LAST_NAME");
+                String phoneNumber = rs.getString("PHONE_NUMBER");
+                String emailAddress = rs.getString("EMAIL_ADDRESS");
+                String password = rs.getString("PASSWORD");
+                int numberCoursesRegistered = rs.getInt("NUMBER_COURSES_REGISTERED");
+                boolean isFullTime = rs.getBoolean("IS_FULL_TIME");
+
+                StudentModel student = null;
+                for (StudentModel s : studentList) {
+                    if (s.getId() == studentId) {
+                        student = s;
+                        break;
+                    }
+                }
+
+                if (student == null) {
+                    student = new StudentModel(firstName, lastName, phoneNumber, emailAddress, password);
+                    student.setId(studentId);
+                    student.setNumberCoursesRegistered(numberCoursesRegistered);
+                    student.setFullTime(isFullTime);
+                    studentList.add(student);
+                }
+
+                int courseId = rs.getInt("COURSE_ID");
+                int courseNumber = rs.getInt("COURSE_NUMBER");
+                String courseType = rs.getString("COURSE_TYPE");
+                int courseSection = rs.getInt("COURSE_SECTION");
+                int courseCapacity = rs.getInt("COURSE_CAPACITY");
+                int courseCredits = rs.getInt("COURSE_CREDITS");
+                int startTime = rs.getInt("COURSE_START_TIME");
+                int endTime = rs.getInt("COURSE_END_TIME");
+                String dayOfWeek = rs.getString("COURSE_DAY_OF_WEEK");
+                String location = rs.getString("ONLINE_LOCATION");
+
+                CourseModel course = CourseFactory.createCourse(
+                        courseType, String.valueOf(courseNumber), courseSection, courseCapacity,
+                        courseCredits, startTime, endTime, dayOfWeek, location
                 );
-
-                student.setId(rs.getInt("STUDENT_ID"));
-                student.setNumberCoursesRegistered(rs.getInt("NUMBER_COURSES_REGISTERED"));
-                student.setFullTime(rs.getBoolean("IS_FULL_TIME"));
-
-                // Add the student to the list
-                students.add(student);
+                course.setCourseId(courseId);
+                student.getRegisteredCourses().add(course);
             }
         } catch (SQLException e) {
-            System.out.println("Failed to fetch students: " + e.getMessage());
+            System.out.println("Error listing all students with courses: " + e.getMessage());
         }
-
-        return students;
+        return studentList;
     }
 
     // Read all Teachers
     public static List<TeacherModel> readTeachers() {
-        String sql = "SELECT * FROM Teacher"; // Adjust this query to match your database schema.
-        List<TeacherModel> teachers = new ArrayList<>();
+        String query = """
+            SELECT 
+                t.TEACHER_ID, t.FIRST_NAME, t.LAST_NAME, t.PHONE_NUMBER, 
+                t.EMAIL_ADDRESS, t.PASSWORD, 
+                c.COURSE_ID, c.COURSE_NUMBER, c.COURSE_TYPE, c.COURSE_SECTION, 
+                c.COURSE_CAPACITY, c.CURRENT_ENROLLMENT_NUMBER, c.COURSE_CREDITS, 
+                c.COURSE_START_TIME, c.COURSE_END_TIME, c.COURSE_DAY_OF_WEEK, 
+                c.LOCATION
+            FROM Teacher t
+            LEFT JOIN Course c ON t.TEACHER_ID = c.TEACHER_ID
+            """;
 
+        Map<Integer, TeacherModel> teacherMap = new HashMap<>();
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery(sql)) {
+             ResultSet rs = statement.executeQuery(query)) {
 
             while (rs.next()) {
-                // Create a TeacherModel object
-                TeacherModel teacher = new TeacherModel(
-                        rs.getString("FIRST_NAME"),
-                        rs.getString("LAST_NAME"),
-                        rs.getString("PHONE_NUMBER"),
-                        rs.getString("EMAIL_ADDRESS"),
-                        rs.getString("PASSWORD"), // Assuming PASSWORD is a column in the database
-                        new ArrayList<>() // Placeholder for coursesTeaching; you can populate this later
-                );
+                // Fetch teacher information
+                int teacherId = rs.getInt("TEACHER_ID");
+                String teacherFirstName = rs.getString("FIRST_NAME");
+                String teacherLastName = rs.getString("LAST_NAME");
+                String teacherPhone = rs.getString("PHONE_NUMBER");
+                String teacherEmail = rs.getString("EMAIL_ADDRESS");
+                String teacherPassword = rs.getString("PASSWORD");
 
-                // Set additional fields if necessary
-                teacher.setId(rs.getInt("TEACHER_ID")); // Assuming setId is inherited from PersonModel
+                // Check if the teacher already exists in the map
+                TeacherModel teacher = teacherMap.get(teacherId);
+                if (teacher == null) {
+                    // Create a new TeacherModel if not already in the map
+                    teacher = new TeacherModel(teacherFirstName, teacherLastName, teacherPhone, teacherEmail, teacherPassword, new ArrayList<CourseModel>());
+                    teacher.setId(teacherId);
+                    teacherMap.put(teacherId, teacher);
+                }
 
-                // Add the teacher to the list
-                teachers.add(teacher);
+                // Fetch course information, if available
+                int courseId = rs.getInt("COURSE_ID");
+                if (courseId > 0) { // Check if the course data exists
+                    String courseNumber = rs.getString("COURSE_NUMBER");
+                    String courseType = rs.getString("COURSE_TYPE");
+                    int section = rs.getInt("COURSE_SECTION");
+                    int capacity = rs.getInt("COURSE_CAPACITY");
+                    int currentEnrollment = rs.getInt("CURRENT_ENROLLMENT_NUMBER");
+                    int credits = rs.getInt("COURSE_CREDITS");
+                    int startTime = rs.getInt("COURSE_START_TIME");
+                    int endTime = rs.getInt("COURSE_END_TIME");
+                    String dayOfWeek = rs.getString("COURSE_DAY_OF_WEEK");
+                    String location = rs.getString("LOCATION");
+
+                    // Create a CourseModel for the course
+                    CourseModel course = CourseFactory.createCourse(
+                            courseType, String.valueOf(courseNumber), section, capacity,
+                            credits, startTime, endTime, dayOfWeek, location
+                    );
+                    course.setCourseId(courseId);
+                    course.setCourseTeacher(teacher);
+
+                    // Add the course to the teacher's list of coursesTeaching
+                    teacher.getCoursesTeaching().add(course);
+                }
             }
+
         } catch (SQLException e) {
-            System.out.println("Failed to fetch teachers: " + e.getMessage());
+            System.out.println("Failed to fetch teachers and their courses: " + e.getMessage());
         }
 
-        return teachers;
+        return new ArrayList<>(teacherMap.values());
     }
-
 
     // Read all Admins
     public static List<AdminModel> readAdmins() {
@@ -411,42 +499,93 @@ public class DatabaseController {
 
         return admins;
     }
+
     // Read all Courses
     public static List<CourseModel> readCourses() {
-        String sql = "SELECT * FROM Courses"; // Adjust to match your database schema
-        List<CourseModel> courses = new ArrayList<>();
-        RegistrationSystem registrationSystem = RegistrationSystem.getInstance();
+        String query = """
+            SELECT 
+                c.COURSE_ID, c.COURSE_NUMBER, c.COURSE_TYPE, c.COURSE_SECTION, 
+                c.COURSE_CAPACITY, c.CURRENT_ENROLLMENT_NUMBER, c.COURSE_CREDITS, 
+                c.COURSE_START_TIME, c.COURSE_END_TIME, c.COURSE_DAY_OF_WEEK, 
+                c.LOCATION, 
+                t.TEACHER_ID, t.FIRST_NAME AS TEACHER_FIRST_NAME, t.LAST_NAME AS TEACHER_LAST_NAME, 
+                t.PHONE_NUMBER AS TEACHER_PHONE, t.EMAIL_ADDRESS AS TEACHER_EMAIL, t.PASSWORD AS TEACHER_PASSWORD,
+                s.STUDENT_ID, s.FIRST_NAME AS STUDENT_FIRST_NAME, s.LAST_NAME AS STUDENT_LAST_NAME, 
+                s.PHONE_NUMBER AS STUDENT_PHONE, s.EMAIL_ADDRESS AS STUDENT_EMAIL, s.PASSWORD AS STUDENT_PASSWORD,
+                s.NUMBER_COURSES_REGISTERED, s.IS_FULL_TIME
+            FROM Course c
+            LEFT JOIN Teacher t ON c.TEACHER_ID = t.TEACHER_ID
+            LEFT JOIN Registered r ON c.COURSE_NUMBER = r.COURSE_NUMBER
+            LEFT JOIN Student s ON r.STUDENT_ID = s.STUDENT_ID
+            """;
 
+        Map<Integer, CourseModel> courseMap = new HashMap<>(); // To store courses by their COURSE_ID
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery(sql)) {
+             ResultSet resultSet = statement.executeQuery(query)) {
 
-            while (rs.next()) {
-                // Create a new CourseModel instance
-                CourseModel course = new CourseModel(
-                        rs.getString("COURSE_NUMBER"),    // Course number
-                        rs.getInt("COURSE_SECTION"),     // Course section
-                        rs.getInt("COURSE_CAPACITY"),    // Course capacity
-                        rs.getInt("COURSE_CREDITS"),     // Course credits
-                        rs.getInt("START_TIME"),         // Start time
-                        rs.getInt("END_TIME"),           // End time
-                        rs.getString("DAY_OF_WEEK")      // Day of the week
-                );
+            while (resultSet.next()) {
+                // Fetch course information
+                int courseId = resultSet.getInt("COURSE_ID");
+                String courseNumber = resultSet.getString("COURSE_NUMBER");
+                String courseType = resultSet.getString("COURSE_TYPE");
+                int section = resultSet.getInt("COURSE_SECTION");
+                int capacity = resultSet.getInt("COURSE_CAPACITY");
+                int currentEnrollment = resultSet.getInt("CURRENT_ENROLLMENT_NUMBER");
+                int credits = resultSet.getInt("COURSE_CREDITS");
+                int startTime = resultSet.getInt("COURSE_START_TIME");
+                int endTime = resultSet.getInt("COURSE_END_TIME");
+                String dayOfWeek = resultSet.getString("COURSE_DAY_OF_WEEK");
+                String location = resultSet.getString("LOCATION");
 
-                // Populate additional fields
-                course.setCurrentEnrollementNumber(rs.getInt("CURRENT_ENROLLMENT"));
+                // Fetch teacher information
+                int teacherId = resultSet.getInt("TEACHER_ID");
+                String teacherFirstName = resultSet.getString("TEACHER_FIRST_NAME");
+                String teacherLastName = resultSet.getString("TEACHER_LAST_NAME");
+                String teacherPhone = resultSet.getString("TEACHER_PHONE");
+                String teacherEmail = resultSet.getString("TEACHER_EMAIL");
+                String teacherPassword = resultSet.getString("TEACHER_PASSWORD");
 
-                // Add the course to the list
-                courses.add(course);
+                // Fetch student information
+                int studentId = resultSet.getInt("STUDENT_ID");
+                String studentFirstName = resultSet.getString("STUDENT_FIRST_NAME");
+                String studentLastName = resultSet.getString("STUDENT_LAST_NAME");
+                String studentPhone = resultSet.getString("STUDENT_PHONE");
+                String studentEmail = resultSet.getString("STUDENT_EMAIL");
+                String studentPassword = resultSet.getString("STUDENT_PASSWORD");
+                int numberCoursesRegistered = resultSet.getInt("NUMBER_COURSES_REGISTERED");
+                int isFullTime = resultSet.getInt("IS_FULL_TIME");
+
+                // Check if the course already exists in the map
+                CourseModel course = courseMap.get(courseId);
+                if (course == null) {
+                    TeacherModel teacher = null;
+                    if (teacherId > 0) { // Check if a teacher is associated
+                        teacher = new TeacherModel(teacherFirstName, teacherLastName, teacherPhone, teacherEmail, teacherPassword, new ArrayList<CourseModel>());
+                        teacher.setId(teacherId);
+                    }
+
+                    course = CourseFactory.createCourse(
+                            courseType, String.valueOf(courseNumber), section, capacity,
+                            credits, startTime, endTime, dayOfWeek, location
+                    );
+                    course.setCourseId(courseId);
+                    courseMap.put(courseId, course);
+                }
+
+                // Add the student to the course's list of students
+                if (studentId > 0) { // Check if a student is associated
+                    StudentModel student = new StudentModel(studentFirstName, studentLastName, studentPhone, studentEmail, studentPassword);
+                    student.setId(studentId);
+                    course.getEnrolledStudents().add(student);
+                }
             }
 
-            // Optionally update the RegistrationSystem's course list
-            registrationSystem.setCourseList(courses);
         } catch (SQLException e) {
-            System.out.println("Failed to fetch courses: " + e.getMessage());
+            System.out.println("Error fetching courses: " + e.getMessage());
         }
 
-        return courses;
+        return new ArrayList<>(courseMap.values());
     }
 
     // Read all Registered Records
@@ -469,5 +608,14 @@ public class DatabaseController {
         }
 
         return registrations;
+    }
+
+
+    public static void initSystem() {
+        RegistrationSystem registrationSystem = RegistrationSystem.getInstance();
+        registrationSystem.setAdminList(readAdmins());
+        registrationSystem.setCourseList(readCourses());
+        registrationSystem.setStudentList(readStudents());
+        registrationSystem.setTeacherList(readTeachers());
     }
 }
