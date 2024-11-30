@@ -5,87 +5,76 @@ import org.vanier.view.adminPanels.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ResourceBundle;
 
 public class AdminManagementView extends JFrame {
-    private static AdminAddCoursePage adminAddCoursePage;
-    private static AdminAddStudentPage adminAddStudentPage;
-    private static AdminLoginPage adminLoginPage;
-    private static AdminMainMenuPage adminMainMenuPage;
-    private static AdminManageAndGenerateReportsPage adminManageAndGenerateReportsPage;
-    private static AdminUpdateCoursePage adminUpdateCoursePage;
-    private static AdminViewStudentEnrollmentPage adminViewStudentEnrollmentPage;
-    private static AdminAddTeacherPage adminAddTeacherPage;
+    private AdminAddCoursePage adminAddCoursePage;
+    private AdminAddStudentPage adminAddStudentPage;
+    private AdminLoginPage adminLoginPage;
+    private AdminMainMenuPage adminMainMenuPage;
+    private AdminManageAndGenerateReportsPage adminManageAndGenerateReportsPage;
+    private AdminUpdateCoursePage adminUpdateCoursePage;
+    private AdminViewStudentEnrollmentPage adminViewStudentEnrollmentPage;
+    private AdminAddTeacherPage adminAddTeacherPage;
 
     private JPanel mainPanel;
     private CardLayout cardLayout;
 
-    private JPanel adminMainMenuPanel;
+    // Buttons for the main menu
     private JButton addCourseButton;
     private JButton updateCourseButton;
     private JButton deleteCourseButton;
-    private JButton viewEnrollmentsButton;
     private JButton generateReportButton;
     private JButton addStudentButton;
     private JButton addTeacherButton;
+    private JButton viewEnrollmentsButton; // Added "View Enrollments" button
 
     public AdminManagementView() {
         setTitle("Admin Portal");
-        setSize(500, 500);
+        setSize(800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        // Initialize static fields
-        initializePages();
-
+        // Initialize CardLayout and main panel
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
-        adminMainMenuPanel = new JPanel();
-        addCourseButton = new JButton("Add Course");
-        updateCourseButton = new JButton("Update Course");
-        deleteCourseButton = new JButton("Delete Course");
-        viewEnrollmentsButton = new JButton("View Enrollments");
-        generateReportButton = new JButton("Generate Report");
-        addStudentButton = new JButton("Create Student");
-        addTeacherButton = new JButton("Add Teacher");
+        // Load ResourceBundle for localization
+        ResourceBundle resourceBundle = RegistrationSystem.getInstance().getResourceBundle();
 
-        adminMainMenuPanel.add(addCourseButton);
-        adminMainMenuPanel.add(updateCourseButton);
-        adminMainMenuPanel.add(deleteCourseButton);
-        adminMainMenuPanel.add(viewEnrollmentsButton);
-        adminMainMenuPanel.add(generateReportButton);
-        adminMainMenuPanel.add(addStudentButton);
-        adminMainMenuPanel.add(addTeacherButton);
+        // Initialize the main menu panel
+        adminMainMenuPage = new AdminMainMenuPage(resourceBundle);
 
-        // Apply language changes after initializing
-        applyLanguageChanges();
-
-        mainPanel.add(adminMainMenuPanel, "adminMainMenu");
-        add(mainPanel);
-    }
-
-    private void initializePages() {
-        // Initialize all static fields
-        adminAddCoursePage = new AdminAddCoursePage();
-        adminLoginPage = new AdminLoginPage();
-        adminMainMenuPage = new AdminMainMenuPage();
-        adminManageAndGenerateReportsPage = new AdminManageAndGenerateReportsPage();
-        adminUpdateCoursePage = new AdminUpdateCoursePage();
+        // Initialize other pages
+        adminAddCoursePage = new AdminAddCoursePage(resourceBundle, mainPanel);
+        adminAddStudentPage = new AdminAddStudentPage(resourceBundle);
+        adminAddTeacherPage = new AdminAddTeacherPage(resourceBundle);
+        adminManageAndGenerateReportsPage = new AdminManageAndGenerateReportsPage(resourceBundle);
+        adminUpdateCoursePage = new AdminUpdateCoursePage(resourceBundle);
         adminViewStudentEnrollmentPage = new AdminViewStudentEnrollmentPage();
-        adminAddStudentPage = new AdminAddStudentPage();
-        adminAddTeacherPage = new AdminAddTeacherPage();
-    }
 
-    private void applyLanguageChanges() {
-        try {
-            adminAddCoursePage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
-            adminLoginPage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
-            adminMainMenuPage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
-            adminManageAndGenerateReportsPage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
-            adminUpdateCoursePage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
-            adminViewStudentEnrollmentPage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
-        } catch (NullPointerException e) {
-            System.err.println("Error applying language changes: " + e.getMessage());
-        }
+        // Add pages to main panel
+        mainPanel.add(adminMainMenuPage, "AdminMainMenuPage");
+        mainPanel.add(adminAddCoursePage, "AdminAddCoursePage");
+        mainPanel.add(adminAddStudentPage, "AdminAddStudentPage");
+        mainPanel.add(adminAddTeacherPage, "AdminAddTeacherPage");
+        mainPanel.add(adminManageAndGenerateReportsPage, "AdminManageAndGenerateReportsPage");
+        mainPanel.add(adminUpdateCoursePage, "AdminUpdateCoursePage");
+        mainPanel.add(adminViewStudentEnrollmentPage, "AdminViewStudentEnrollmentPage");
+
+        // Extract buttons from adminMainMenuPage
+        addCourseButton = adminMainMenuPage.getAddCourseButton();
+        updateCourseButton = adminMainMenuPage.getUpdateCourseButton();
+        deleteCourseButton = adminMainMenuPage.getDeleteCourseButton();
+        generateReportButton = adminMainMenuPage.getGenerateReportsOnCourseButton();
+        addStudentButton = adminMainMenuPage.getCreateStudentButton();
+        addTeacherButton = adminMainMenuPage.getAddTeacherButton();
+        viewEnrollmentsButton = new JButton(resourceBundle.getString("viewEnrollmentsButton")); // Add the "View Enrollments" button
+
+        // Add main panel to the frame
+        add(mainPanel);
+
+        // Show the main menu initially
+        cardLayout.show(mainPanel, "AdminMainMenuPage");
     }
 
     public JButton getAddCourseButton() {
@@ -100,10 +89,6 @@ public class AdminManagementView extends JFrame {
         return deleteCourseButton;
     }
 
-    public JButton getViewEnrollmentsButton() {
-        return viewEnrollmentsButton;
-    }
-
     public JButton getGenerateReportButton() {
         return generateReportButton;
     }
@@ -114,6 +99,14 @@ public class AdminManagementView extends JFrame {
 
     public JButton getAddTeacherButton() {
         return addTeacherButton;
+    }
+
+    public JButton getViewEnrollmentsButton() { // Add getter for "View Enrollments" button
+        return viewEnrollmentsButton;
+    }
+
+    public void navigateTo(String pageName) {
+        cardLayout.show(mainPanel, pageName);
     }
 
     @Override

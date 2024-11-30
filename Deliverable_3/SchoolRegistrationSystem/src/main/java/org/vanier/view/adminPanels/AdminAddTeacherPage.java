@@ -10,42 +10,43 @@ public class AdminAddTeacherPage extends JPanel {
     private JTextField firstNameField, lastNameField, phoneNumberField, emailAddressField, passwordField;
     private JButton addTeacherButton, returnToPreviousPageButton;
 
-    public AdminAddTeacherPage() {
+    public AdminAddTeacherPage(ResourceBundle resourceBundle) {
         setLayout(new GridLayout(7, 2, 10, 10));
 
-        addTeacherMenuLabel = new JLabel("Add Teacher");
+        // Initialize components with localized text
+        addTeacherMenuLabel = new JLabel(resourceBundle.getString("addTeacherMenu"));
         add(addTeacherMenuLabel);
-        add(new JLabel());
+        add(new JLabel()); // Empty cell for spacing
 
-        firstNameLabel = new JLabel("First Name:");
+        firstNameLabel = new JLabel(resourceBundle.getString("firstNameLabel"));
         add(firstNameLabel);
         firstNameField = new JTextField();
         add(firstNameField);
 
-        lastNameLabel = new JLabel("Last Name:");
+        lastNameLabel = new JLabel(resourceBundle.getString("lastNameLabel"));
         add(lastNameLabel);
         lastNameField = new JTextField();
         add(lastNameField);
 
-        phoneNumberLabel = new JLabel("Phone Number:");
+        phoneNumberLabel = new JLabel(resourceBundle.getString("phoneNumberLabel"));
         add(phoneNumberLabel);
         phoneNumberField = new JTextField();
         add(phoneNumberField);
 
-        emailAddressLabel = new JLabel("Email Address:");
+        emailAddressLabel = new JLabel(resourceBundle.getString("emailAddressLabel"));
         add(emailAddressLabel);
         emailAddressField = new JTextField();
         add(emailAddressField);
 
-        passwordLabel = new JLabel("Password:");
+        passwordLabel = new JLabel(resourceBundle.getString("passwordLabel"));
         add(passwordLabel);
         passwordField = new JTextField();
         add(passwordField);
 
-        addTeacherButton = new JButton("Add Teacher");
+        addTeacherButton = new JButton(resourceBundle.getString("addTeacherButton"));
         add(addTeacherButton);
 
-        returnToPreviousPageButton = new JButton("Back");
+        returnToPreviousPageButton = new JButton(resourceBundle.getString("returnToPreviousPageButton"));
         add(returnToPreviousPageButton);
     }
 

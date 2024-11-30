@@ -4,11 +4,13 @@ import org.vanier.controller.AdminManagementController;
 import org.vanier.controller.StudentRegistrationController;
 import org.vanier.controller.TeacherController;
 import org.vanier.model.RegistrationSystem;
+import org.vanier.view.adminPanels.AdminMainMenuPage;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class MainForm extends JFrame {
     private JPanel panelMain;
@@ -81,14 +83,15 @@ public class MainForm extends JFrame {
         adminJButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Create the main admin view
-                AdminManagementView adminView = new AdminManagementView();
+                // Get the current ResourceBundle for localization
+                ResourceBundle resourceBundle = RegistrationSystem.getInstance().getResourceBundle();
 
-                // Initialize the admin controller with the view
-                AdminManagementController controller = new AdminManagementController(adminView);
-
-                // Display the admin view
-                adminView.setVisible(true);
+                // Open the AdminMainMenuPage with the ResourceBundle
+                JFrame adminFrame = new JFrame(resourceBundle.getString("adminMainMenuTitle"));
+                adminFrame.setContentPane(new AdminMainMenuPage(resourceBundle));
+                adminFrame.setSize(700, 500); // Adjust size as necessary
+                adminFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                adminFrame.setVisible(true);
             }
         });
 

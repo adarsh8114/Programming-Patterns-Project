@@ -16,11 +16,29 @@ public class AdminUpdateCoursePage extends JPanel {
     private JButton updateCoursePage;
     private JButton returnToPreviousPageButton;
 
-    public AdminUpdateCoursePage() {
+    private JLabel courseIdLabel;
+    private JLabel courseNumberLabel;
+    private JLabel courseSectionLabel;
+    private JLabel courseCapacityLabel;
+    private JLabel courseCreditsLabel;
+    private JLabel startTimeLabel;
+    private JLabel endTimeLabel;
+    private JLabel dayOfWeekLabel;
+
+    public AdminUpdateCoursePage(ResourceBundle resourceBundle) {
         // Set layout
         setLayout(new GridLayout(10, 2, 10, 10));
 
-        // Initialize components
+        // Initialize components with localized text
+        courseIdLabel = new JLabel(resourceBundle.getString("courseIdLabel"));
+        courseNumberLabel = new JLabel(resourceBundle.getString("courseNumberLabel"));
+        courseSectionLabel = new JLabel(resourceBundle.getString("courseSectionLabel"));
+        courseCapacityLabel = new JLabel(resourceBundle.getString("courseCapacityLabel"));
+        courseCreditsLabel = new JLabel(resourceBundle.getString("courseCreditsLabel"));
+        startTimeLabel = new JLabel(resourceBundle.getString("startTimeLabel"));
+        endTimeLabel = new JLabel(resourceBundle.getString("endTimeLabel"));
+        dayOfWeekLabel = new JLabel(resourceBundle.getString("dayOfWeekLabel"));
+
         courseIdTextField = new JTextField(20);
         courseNumberField = new JTextField(20);
         courseSectionField = new JTextField(20);
@@ -29,30 +47,31 @@ public class AdminUpdateCoursePage extends JPanel {
         startTimeField = new JTextField(20);
         endTimeField = new JTextField(20);
         dayOfWeekField = new JTextField(20);
-        updateCoursePage = new JButton("Update Course");
-        returnToPreviousPageButton = new JButton("Return");
+        updateCoursePage = new JButton(resourceBundle.getString("updateCoursePage"));
+        returnToPreviousPageButton = new JButton(resourceBundle.getString("returnToPreviousPageButton"));
 
         // Add components to the panel
-        add(new JLabel("Course ID:"));
+        add(courseIdLabel);
         add(courseIdTextField);
-        add(new JLabel("Course Number:"));
+        add(courseNumberLabel);
         add(courseNumberField);
-        add(new JLabel("Course Section:"));
+        add(courseSectionLabel);
         add(courseSectionField);
-        add(new JLabel("Course Capacity:"));
+        add(courseCapacityLabel);
         add(courseCapacityField);
-        add(new JLabel("Course Credits:"));
+        add(courseCreditsLabel);
         add(courseCreditsField);
-        add(new JLabel("Start Time:"));
+        add(startTimeLabel);
         add(startTimeField);
-        add(new JLabel("End Time:"));
+        add(endTimeLabel);
         add(endTimeField);
-        add(new JLabel("Day of Week:"));
+        add(dayOfWeekLabel);
         add(dayOfWeekField);
         add(updateCoursePage);
         add(returnToPreviousPageButton);
     }
 
+    // Getters for UI elements
     public JTextField getCourseIdTextField() {
         return courseIdTextField;
     }
@@ -93,8 +112,21 @@ public class AdminUpdateCoursePage extends JPanel {
         return returnToPreviousPageButton;
     }
 
+    /**
+     * Updates the UI text based on the provided language resource bundle.
+     *
+     * @param resourceBundle the ResourceBundle containing translated strings
+     */
     public void changeLanguage(ResourceBundle resourceBundle) {
-        returnToPreviousPageButton.setText(resourceBundle.getString("returnToPreviousPageButton"));
+        courseIdLabel.setText(resourceBundle.getString("courseIdLabel"));
+        courseNumberLabel.setText(resourceBundle.getString("courseNumberLabel"));
+        courseSectionLabel.setText(resourceBundle.getString("courseSectionLabel"));
+        courseCapacityLabel.setText(resourceBundle.getString("courseCapacityLabel"));
+        courseCreditsLabel.setText(resourceBundle.getString("courseCreditsLabel"));
+        startTimeLabel.setText(resourceBundle.getString("startTimeLabel"));
+        endTimeLabel.setText(resourceBundle.getString("endTimeLabel"));
+        dayOfWeekLabel.setText(resourceBundle.getString("dayOfWeekLabel"));
         updateCoursePage.setText(resourceBundle.getString("updateCoursePage"));
+        returnToPreviousPageButton.setText(resourceBundle.getString("returnToPreviousPageButton"));
     }
 }

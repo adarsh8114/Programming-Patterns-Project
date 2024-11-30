@@ -24,12 +24,12 @@
           <text value="Return to Previous Page"/>
         </properties>
       </component>
-      <component id="c3344" class="javax.swing.JLabel">
+      <component id="c3344" class="javax.swing.JLabel" binding="courseIdLabel">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Student Id:&#10;"/>
+          <text value="Course id: "/>
         </properties>
       </component>
       <component id="87365" class="javax.swing.JTextField" binding="studentIdTextField">
