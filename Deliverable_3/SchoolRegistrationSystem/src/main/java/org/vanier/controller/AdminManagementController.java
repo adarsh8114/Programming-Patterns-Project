@@ -10,62 +10,48 @@ import javax.swing.*;
 import java.util.List;
 
 /**
- * The AdminManagementController class controls the admin management view and handles
- * actions for managing courses and generating reports. It facilitates communication
- * between the AdminManagementView and AdminModel.
+ * Controls the admin management view and handles actions for managing courses and generating reports.
  */
 public class AdminManagementController {
-    private final AdminManagementView adminView;
+    private final AdminManagementView adminManagementView;
     private final AdminModel adminModel = new AdminModel();
 
-    /**
-     * Constructs an AdminManagementController with a specified AdminManagementView.
-     *
-     * @param adminView The view for admin management operations.
-     */
-    public AdminManagementController(AdminManagementView adminView) {
-        this.adminView = adminView;
+    public AdminManagementController(AdminManagementView adminManagementView) {
+        this.adminManagementView = adminManagementView;
         setupMainAdminViewListeners();
     }
 
-    /**
-     * Sets up action listeners for main admin view buttons.
-     */
     private void setupMainAdminViewListeners() {
-        adminView.getViewEnrollmentsButton().addActionListener(e -> openViewStudentEnrollmentPage());
-        adminView.getAddCourseButton().addActionListener(e -> addCourse());
-        adminView.getUpdateCourseButton().addActionListener(e -> updateCourse());
-        adminView.getDeleteCourseButton().addActionListener(e -> deleteCourse());
-        adminView.getGenerateReportButton().addActionListener(e -> generateReport());
+        adminManagementView.getViewEnrollmentsButton().addActionListener(e -> openViewStudentEnrollmentPage());
+        adminManagementView.getAddCourseButton().addActionListener(e -> addCourse());
+        adminManagementView.getUpdateCourseButton().addActionListener(e -> updateCourse());
+        adminManagementView.getDeleteCourseButton().addActionListener(e -> deleteCourse());
+        adminManagementView.getGenerateReportButton().addActionListener(e -> generateReport());
     }
 
-    /**
-     * Opens the View Student Enrollment page and sets up listeners for its buttons.
-     */
     private void openViewStudentEnrollmentPage() {
         AdminViewStudentEnrollmentPage enrollmentPage = new AdminViewStudentEnrollmentPage();
         setupViewStudentEnrollmentListeners(enrollmentPage);
-        enrollmentPage.setVisible(true);
+
+        JFrame enrollmentFrame = new JFrame("Student Enrollment");
+        enrollmentFrame.setSize(600, 400);
+        enrollmentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        enrollmentFrame.add(enrollmentPage);
+        enrollmentFrame.setVisible(true);
     }
 
-    /**
-     * Sets up listeners for actions within the student enrollment page.
-     *
-     * @param enrollmentPage The page for viewing student enrollments.
-     */
     private void setupViewStudentEnrollmentListeners(AdminViewStudentEnrollmentPage enrollmentPage) {
         enrollmentPage.getViewStudentEnrollmentButton().addActionListener(e -> viewStudentEnrollments(enrollmentPage));
-        enrollmentPage.getReturnToPreviousPageButton().addActionListener(e -> enrollmentPage.dispose());
+        enrollmentPage.getReturnToPreviousPageButton().addActionListener(e -> {
+            JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(enrollmentPage);
+            if (parentFrame != null) {
+                parentFrame.dispose();
+            }
+        });
     }
 
-    /**
-     * Retrieves and displays the list of students enrolled in a specific course.
-     *
-     * @param enrollmentPage The page for viewing student enrollments.
-     */
     private void viewStudentEnrollments(AdminViewStudentEnrollmentPage enrollmentPage) {
         JTextArea enrollmentTextArea = enrollmentPage.getEnrollmentTextArea();
-
         try {
             int courseId = Integer.parseInt(enrollmentPage.getCourseIdTextField().getText().trim());
             List<StudentModel> enrolledStudents = adminModel.getStudentEnrollments(courseId);
@@ -84,9 +70,6 @@ public class AdminManagementController {
         }
     }
 
-    /**
-     * Collects course details from the user and adds a new course to the system.
-     */
     private void addCourse() {
         try {
             String courseNumber = JOptionPane.showInputDialog("Enter Course Number:");
@@ -99,22 +82,19 @@ public class AdminManagementController {
 
             CourseModel course = new CourseModel(courseNumber, courseSection, courseCapacity, courseCredits, startTime, endTime, dayOfWeek);
             adminModel.addCourse(course);
-            JOptionPane.showMessageDialog(adminView, "Course added: " + course.getCourseId(), "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(adminManagementView, "Course added: " + course.getCourseId(), "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(adminView, "Invalid input. Please enter numeric values where required.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(adminManagementView, "Invalid input. Please enter numeric values where required.", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    /**
-     * Prompts the user for a course ID and updated details, then updates the course in the system.
-     */
     private void updateCourse() {
         try {
             int courseId = Integer.parseInt(JOptionPane.showInputDialog("Enter Course ID to update:"));
-
             CourseModel existingCourse = adminModel.getCourseById(courseId);
+
             if (existingCourse == null) {
-                JOptionPane.showMessageDialog(adminView, "Course with ID " + courseId + " not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(adminManagementView, "Course with ID " + courseId + " not found.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -129,41 +109,32 @@ public class AdminManagementController {
             CourseModel updatedCourse = new CourseModel(courseNumber, courseSection, courseCapacity, courseCredits, startTime, endTime, dayOfWeek);
             boolean success = adminModel.updateCourse(courseId, updatedCourse);
 
-            JOptionPane.showMessageDialog(adminView, success ? "Course updated: " + updatedCourse.getCourseId() : "Course not found.",
+            JOptionPane.showMessageDialog(adminManagementView, success ? "Course updated: " + updatedCourse.getCourseId() : "Course not found.",
                     success ? "Success" : "Error", success ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE);
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(adminView, "Invalid input. Please enter numeric values where required.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(adminManagementView, "Invalid input. Please enter numeric values where required.", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    /**
-     * Prompts the user for a course ID and deletes the course from the system.
-     */
     private void deleteCourse() {
         try {
             int courseId = Integer.parseInt(JOptionPane.showInputDialog("Enter Course ID to delete:"));
             boolean success = adminModel.deleteCourse(courseId);
 
-            JOptionPane.showMessageDialog(adminView, success ? "Course deleted: " + courseId : "Course not found.",
+            JOptionPane.showMessageDialog(adminManagementView, success ? "Course deleted: " + courseId : "Course not found.",
                     success ? "Success" : "Error", success ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE);
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(adminView, "Invalid input. Please enter a numeric Course ID.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(adminManagementView, "Invalid input. Please enter a numeric Course ID.", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    /**
-     * Generates and displays an enrollment report for all courses.
-     */
     private void generateReport() {
         StringBuilder report = new StringBuilder("Enrollment Report:\n");
 
-        // Fetch all courses from the system
         List<CourseModel> courses = adminModel.getAllCourses();
-
         for (CourseModel course : courses) {
             report.append("Course ID: ").append(course.getCourseId()).append(" - ").append(course.getCourseNumber()).append("\n");
 
-            // Fetch enrolled students for each course
             List<StudentModel> enrolledStudents = adminModel.getStudentEnrollments(course.getCourseId());
             if (enrolledStudents.isEmpty()) {
                 report.append("   No students enrolled.\n");
@@ -177,7 +148,6 @@ public class AdminManagementController {
             report.append("\n");
         }
 
-        // Display the generated report
-        JOptionPane.showMessageDialog(adminView, report.toString(), "Enrollment Report", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(adminManagementView, report.toString(), "Enrollment Report", JOptionPane.INFORMATION_MESSAGE);
     }
 }

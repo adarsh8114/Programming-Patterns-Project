@@ -2,6 +2,7 @@ package org.vanier.view.adminPanels;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ResourceBundle;
 
 public class AdminUpdateCoursePage extends JPanel {
     private JTextField courseIdTextField;
@@ -12,12 +13,12 @@ public class AdminUpdateCoursePage extends JPanel {
     private JTextField startTimeField;
     private JTextField endTimeField;
     private JTextField dayOfWeekField;
-    private JButton updateButton;
+    private JButton updateCoursePage;
     private JButton returnToPreviousPageButton;
 
     public AdminUpdateCoursePage() {
         // Set layout
-        setLayout(new GridLayout(10, 2, 10, 10)); // Grid layout with spacing
+        setLayout(new GridLayout(10, 2, 10, 10));
 
         // Initialize components
         courseIdTextField = new JTextField(20);
@@ -28,7 +29,7 @@ public class AdminUpdateCoursePage extends JPanel {
         startTimeField = new JTextField(20);
         endTimeField = new JTextField(20);
         dayOfWeekField = new JTextField(20);
-        updateButton = new JButton("Update Course");
+        updateCoursePage = new JButton("Update Course");
         returnToPreviousPageButton = new JButton("Return");
 
         // Add components to the panel
@@ -48,11 +49,10 @@ public class AdminUpdateCoursePage extends JPanel {
         add(endTimeField);
         add(new JLabel("Day of Week:"));
         add(dayOfWeekField);
-        add(updateButton);
+        add(updateCoursePage);
         add(returnToPreviousPageButton);
     }
 
-    // Getters for UI components that the controller needs to access
     public JTextField getCourseIdTextField() {
         return courseIdTextField;
     }
@@ -85,11 +85,16 @@ public class AdminUpdateCoursePage extends JPanel {
         return dayOfWeekField;
     }
 
-    public JButton getUpdateButton() {
-        return updateButton;
+    public JButton getUpdateCoursePage() {
+        return updateCoursePage;
     }
 
     public JButton getReturnToPreviousPageButton() {
         return returnToPreviousPageButton;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle) {
+        returnToPreviousPageButton.setText(resourceBundle.getString("returnToPreviousPageButton"));
+        updateCoursePage.setText(resourceBundle.getString("updateCoursePage"));
     }
 }

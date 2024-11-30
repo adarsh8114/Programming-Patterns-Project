@@ -11,24 +11,19 @@ public class RegistrationSystem {
     private List<TeacherModel> teacherList;
     private List<AdminModel> adminList;
     private static RegistrationSystem registrationSystem;
-    private Locale locale = new Locale("en","CA");
+    private Locale locale = Locale.of("en", "CA"); // Updated constructor
     private ResourceBundle resourceBundle = ResourceBundle.getBundle("Messages", locale);
 
     public static void main(String[] args) {
         System.out.println(getInstance().resourceBundle.getString("welcomeStudentLoginPage"));
     }
+
     private RegistrationSystem() {
         studentList = new ArrayList<>();
         courseList = new ArrayList<>();
         teacherList = new ArrayList<>();
     }
 
-    /**
-     * Retrieves the list of students enrolled in a specific course by course ID.
-     *
-     * @param courseId The ID of the course to get enrollments for.
-     * @return A list of StudentModel objects representing students enrolled in the course.
-     */
     public List<StudentModel> getEnrolledStudentsByCourseId(int courseId) {
         List<StudentModel> enrolledStudents = new ArrayList<>();
         for (StudentModel student : studentList) {
@@ -42,11 +37,6 @@ public class RegistrationSystem {
         return enrolledStudents;
     }
 
-    /**
-     * get or creates a new instance of the registrationSystem
-     *
-     * @return the singular registration system instnace
-     */
     public static RegistrationSystem getInstance() {
         if (registrationSystem == null) {
             synchronized (RegistrationSystem.class) {

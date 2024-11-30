@@ -2,6 +2,7 @@ package org.vanier.view.adminPanels;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ResourceBundle;
 
 public class AdminViewStudentEnrollmentPage extends JPanel {
     private JTextField courseIdTextField;
@@ -54,5 +55,10 @@ public class AdminViewStudentEnrollmentPage extends JPanel {
 
     public JButton getReturnToPreviousPageButton() {
         return returnToPreviousPageButton;
+    }
+
+    public void changeLanguage(ResourceBundle resourceBundle) {
+        returnToPreviousPageButton.setText(resourceBundle.getString("returnToPreviousPageButton"));
+        viewStudentEnrollmentButton.setText(resourceBundle.getString("viewStudentEnrollmentButton"));
     }
 }

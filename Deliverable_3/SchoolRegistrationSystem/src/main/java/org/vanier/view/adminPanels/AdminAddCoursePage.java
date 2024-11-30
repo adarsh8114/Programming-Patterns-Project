@@ -2,6 +2,7 @@ package org.vanier.view.adminPanels;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ResourceBundle;
 
 public class AdminAddCoursePage extends JPanel {
     private JTextField courseIdTextField;
@@ -90,5 +91,17 @@ public class AdminAddCoursePage extends JPanel {
 
     public JButton getReturnToPreviousPageButton() {
         return returnToPreviousPageButton;
+    }
+
+    /**
+     * Updates the UI text based on the provided language resource bundle.
+     *
+     * @param resourceBundle the ResourceBundle containing translated strings
+     */
+    public void changeLanguage(ResourceBundle resourceBundle) {
+        addCourseMenuLabel.setText(resourceBundle.getString("addCourseMenu"));
+        courseIdLabel.setText(resourceBundle.getString("courseIdLabel"));
+        courseAddButton.setText(resourceBundle.getString("courseAddButton"));
+        returnToPreviousPageButton.setText(resourceBundle.getString("returnToPreviousPageButton"));
     }
 }

@@ -4,7 +4,6 @@ import org.vanier.controller.AdminManagementController;
 import org.vanier.controller.StudentRegistrationController;
 import org.vanier.controller.TeacherController;
 import org.vanier.model.RegistrationSystem;
-import org.vanier.view.AdminManagementView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
