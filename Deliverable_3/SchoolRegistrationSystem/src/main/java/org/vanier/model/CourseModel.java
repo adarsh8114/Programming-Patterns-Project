@@ -15,7 +15,7 @@ public class CourseModel {
     private int endTime;
     private List<StudentModel> enrolledStudents;
     private TeacherModel courseTeacher;
-    private String dayOfWeek; //added day which is not on class diagram
+    private String dayOfWeek;
     private static int counter = 1;
 
     public CourseModel(String courseNumber, int courseSection, int courseCapacity, int courseCredits, int startTime,
@@ -126,6 +126,10 @@ public class CourseModel {
 
     public static int getCounter() {
         return counter;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
 
     /**

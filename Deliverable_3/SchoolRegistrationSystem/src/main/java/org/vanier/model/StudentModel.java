@@ -34,10 +34,12 @@ public class StudentModel extends PersonModel {
      * @return the full or part time status of student
      */
     public String getStudentStatus() {
+        ResourceBundle messages = RegistrationSystem.getInstance().getResourceBundle();
+
         if (isFullTime) {
-            return "You are currently a full time student";
+            return messages.getString("full_time_student");
         }
-        return "You are currently a part time student!";
+        return messages.getString("part_time_student");
     }
 
     /**
@@ -66,6 +68,10 @@ public class StudentModel extends PersonModel {
 
     public void setFullTime(boolean fullTime) {
         isFullTime = fullTime;
+    }
+
+    public void setRegisteredCourses(Set<CourseModel> registeredCourses) {
+        this.registeredCourses = registeredCourses;
     }
 
     @Override
