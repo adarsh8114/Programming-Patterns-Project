@@ -21,6 +21,11 @@ public class StudentViewSchedulePage extends JFrame{
         return RegisteredCoursesTextArea;
     }
 
+    /**
+     * Updates the UI text based on the provided language resource bundle.
+     *
+     * @param resourceBundle the ResourceBundle containing translated strings
+     */
     public void changeLanguage(ResourceBundle resourceBundle) {
         TitleLabel.setText(resourceBundle.getString("viewCourseScheduleMenuTitle"));
         ReturnButton.setText(resourceBundle.getString("returnToPreviousPageButtonText"));

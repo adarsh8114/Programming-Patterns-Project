@@ -1,102 +1,116 @@
 package org.vanier.view;
 
-import org.vanier.view.adminPanels.AddCoursePanel;
-import org.vanier.view.adminPanels.UpdateCoursePanel;
-import org.vanier.view.adminPanels.DeleteCoursePanel;
-import org.vanier.view.adminPanels.ViewEnrollmentsPanel;
-import org.vanier.view.adminPanels.GenerateReportPanel;
+import org.vanier.model.RegistrationSystem;
+import org.vanier.view.adminPanels.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ResourceBundle;
 
 public class AdminManagementView extends JFrame {
+    private AdminAddCoursePage adminAddCoursePage;
+    private AdminAddStudentPage adminAddStudentPage;
+    private AdminLoginPage adminLoginPage;
+    private AdminMainMenuPage adminMainMenuPage;
+    private AdminManageAndGenerateReportsPage adminManageAndGenerateReportsPage;
+    private AdminUpdateCoursePage adminUpdateCoursePage;
+    private AdminViewStudentEnrollmentPage adminViewStudentEnrollmentPage;
+    private AdminAddTeacherPage adminAddTeacherPage;
+
     private JPanel mainPanel;
     private CardLayout cardLayout;
 
-    private JPanel adminMainMenuPanel;
-    private AddCoursePanel addCoursePanel;
-    private UpdateCoursePanel updateCoursePanel;
-    private DeleteCoursePanel deleteCoursePanel;
-    private ViewEnrollmentsPanel viewEnrollmentsPanel;
-    private GenerateReportPanel generateReportPanel;
+    // Buttons for the main menu
+    private JButton addCourseButton;
+    private JButton updateCourseButton;
+    private JButton deleteCourseButton;
+    private JButton generateReportButton;
+    private JButton addStudentButton;
+    private JButton addTeacherButton;
+    private JButton viewEnrollmentsButton; // Added "View Enrollments" button
 
-    public AdminManagementView() throws HeadlessException {
+    public AdminManagementView() {
         setTitle("Admin Portal");
-        setSize(500, 500);
+        setSize(800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        // Initialize CardLayout and main panel
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
-        // Initialize the main menu panel for admin
-        adminMainMenuPanel = new JPanel();
-        JButton addCourseButton = new JButton("Add Course");
-        JButton updateCourseButton = new JButton("Update Course");
-        JButton deleteCourseButton = new JButton("Delete Course");
-        JButton viewEnrollmentsButton = new JButton("View Enrollments");
-        JButton generateReportButton = new JButton("Generate Report");
+        // Load ResourceBundle for localization
+        ResourceBundle resourceBundle = RegistrationSystem.getInstance().getResourceBundle();
 
-        // Add buttons to the main menu panel
-        adminMainMenuPanel.add(addCourseButton);
-        adminMainMenuPanel.add(updateCourseButton);
-        adminMainMenuPanel.add(deleteCourseButton);
-        adminMainMenuPanel.add(viewEnrollmentsButton);
-        adminMainMenuPanel.add(generateReportButton);
+        // Initialize the main menu panel
+        adminMainMenuPage = new AdminMainMenuPage(resourceBundle);
 
-        // Initialize task-specific panels
-        addCoursePanel = new AddCoursePanel();
-        updateCoursePanel = new UpdateCoursePanel();
-        deleteCoursePanel = new DeleteCoursePanel();
-        viewEnrollmentsPanel = new ViewEnrollmentsPanel();
-        generateReportPanel = new GenerateReportPanel();
+        // Initialize other pages
+        adminAddCoursePage = new AdminAddCoursePage(resourceBundle, mainPanel);
+        adminAddStudentPage = new AdminAddStudentPage(resourceBundle);
+        adminAddTeacherPage = new AdminAddTeacherPage(resourceBundle);
+        adminManageAndGenerateReportsPage = new AdminManageAndGenerateReportsPage(resourceBundle);
+        adminUpdateCoursePage = new AdminUpdateCoursePage(resourceBundle);
+        adminViewStudentEnrollmentPage = new AdminViewStudentEnrollmentPage();
 
-        // Add panels to the CardLayout with unique names
-        mainPanel.add(adminMainMenuPanel, "adminMainMenu");
-        mainPanel.add(addCoursePanel, "addCourse");
-        mainPanel.add(updateCoursePanel, "updateCourse");
-        mainPanel.add(deleteCoursePanel, "deleteCourse");
-        mainPanel.add(viewEnrollmentsPanel, "viewEnrollments");
-        mainPanel.add(generateReportPanel, "generateReport");
+        // Add pages to main panel
+        mainPanel.add(adminMainMenuPage, "AdminMainMenuPage");
+        mainPanel.add(adminAddCoursePage, "AdminAddCoursePage");
+        mainPanel.add(adminAddStudentPage, "AdminAddStudentPage");
+        mainPanel.add(adminAddTeacherPage, "AdminAddTeacherPage");
+        mainPanel.add(adminManageAndGenerateReportsPage, "AdminManageAndGenerateReportsPage");
+        mainPanel.add(adminUpdateCoursePage, "AdminUpdateCoursePage");
+        mainPanel.add(adminViewStudentEnrollmentPage, "AdminViewStudentEnrollmentPage");
 
-        // Add the main panel to the frame
+        // Extract buttons from adminMainMenuPage
+        addCourseButton = adminMainMenuPage.getAddCourseButton();
+        updateCourseButton = adminMainMenuPage.getUpdateCourseButton();
+        deleteCourseButton = adminMainMenuPage.getDeleteCourseButton();
+        generateReportButton = adminMainMenuPage.getGenerateReportsOnCourseButton();
+        addStudentButton = adminMainMenuPage.getCreateStudentButton();
+        addTeacherButton = adminMainMenuPage.getAddTeacherButton();
+        viewEnrollmentsButton = new JButton(resourceBundle.getString("viewEnrollmentsButton")); // Add the "View Enrollments" button
+
+        // Add main panel to the frame
         add(mainPanel);
 
-        // Add action listeners to buttons for panel navigation
-        addCourseButton.addActionListener(e -> showPanel("addCourse"));
-        updateCourseButton.addActionListener(e -> showPanel("updateCourse"));
-        deleteCourseButton.addActionListener(e -> showPanel("deleteCourse"));
-        viewEnrollmentsButton.addActionListener(e -> showPanel("viewEnrollments"));
-        generateReportButton.addActionListener(e -> showPanel("generateReport"));
+        // Show the main menu initially
+        cardLayout.show(mainPanel, "AdminMainMenuPage");
     }
 
-    // Method to show a specific panel by name
-    public void showPanel(String panelName) {
-        cardLayout.show(mainPanel, panelName);
+    public JButton getAddCourseButton() {
+        return addCourseButton;
     }
 
-    // Method to return to the main menu
-    public void showAdminMainMenuPanel() {
-        cardLayout.show(mainPanel, "adminMainMenu");
+    public JButton getUpdateCourseButton() {
+        return updateCourseButton;
     }
 
-    // Getters for the individual panels
-    public AddCoursePanel getAddCoursePanel() {
-        return addCoursePanel;
+    public JButton getDeleteCourseButton() {
+        return deleteCourseButton;
     }
 
-    public UpdateCoursePanel getUpdateCoursePanel() {
-        return updateCoursePanel;
+    public JButton getGenerateReportButton() {
+        return generateReportButton;
     }
 
-    public DeleteCoursePanel getDeleteCoursePanel() {
-        return deleteCoursePanel;
+    public JButton getAddStudentButton() {
+        return addStudentButton;
     }
 
-    public ViewEnrollmentsPanel getViewEnrollmentsPanel() {
-        return viewEnrollmentsPanel;
+    public JButton getAddTeacherButton() {
+        return addTeacherButton;
     }
 
-    public GenerateReportPanel getGenerateReportPanel() {
-        return generateReportPanel;
+    public JButton getViewEnrollmentsButton() { // Add getter for "View Enrollments" button
+        return viewEnrollmentsButton;
+    }
+
+    public void navigateTo(String pageName) {
+        cardLayout.show(mainPanel, pageName);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
     }
 }
