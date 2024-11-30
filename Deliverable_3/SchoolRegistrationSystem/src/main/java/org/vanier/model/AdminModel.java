@@ -8,12 +8,20 @@ import java.util.List;
  * It utilizes the RegistrationSystem to perform operations such as adding, updating, and deleting courses.
  */
 public class AdminModel {
-    private final RegistrationSystem registrationSystem = RegistrationSystem.getInstance();
+    private final RegistrationSystem registrationSystem;
+
+    /**
+     * Default Constructor.
+     * Initializes the AdminModel with the singleton instance of RegistrationSystem.
+     */
+    public AdminModel() {
+        this.registrationSystem = RegistrationSystem.getInstance();
+    }
 
     /**
      * Adds a new student to the registration system's student list.
      *
-     * @param student The CourseModel object representing the course to be added.
+     * @param student The StudentModel object representing the student to be added.
      */
     public void addStudent(StudentModel student) {
         registrationSystem.getStudentList().add(student);
@@ -22,7 +30,7 @@ public class AdminModel {
     /**
      * Adds a new teacher to the registration system's teacher list.
      *
-     * @param teacher The CourseModel object representing the course to be added.
+     * @param teacher The TeacherModel object representing the teacher to be added.
      */
     public void addTeacher(TeacherModel teacher) {
         registrationSystem.getTeacherList().add(teacher);
