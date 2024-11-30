@@ -8,11 +8,13 @@ import java.awt.*;
 
 public class AdminManagementView extends JFrame {
     private static AdminAddCoursePage adminAddCoursePage;
+    private static AdminAddStudentPage adminAddStudentPage;
     private static AdminLoginPage adminLoginPage;
     private static AdminMainMenuPage adminMainMenuPage;
     private static AdminManageAndGenerateReportsPage adminManageAndGenerateReportsPage;
     private static AdminUpdateCoursePage adminUpdateCoursePage;
     private static AdminViewStudentEnrollmentPage adminViewStudentEnrollmentPage;
+    private static AdminAddTeacherPage adminAddTeacherPage;
 
     private JPanel mainPanel;
     private CardLayout cardLayout;
@@ -23,6 +25,8 @@ public class AdminManagementView extends JFrame {
     private JButton deleteCourseButton;
     private JButton viewEnrollmentsButton;
     private JButton generateReportButton;
+    private JButton addStudentButton;
+    private JButton addTeacherButton;
 
     public AdminManagementView() {
         setTitle("Admin Portal");
@@ -41,12 +45,16 @@ public class AdminManagementView extends JFrame {
         deleteCourseButton = new JButton("Delete Course");
         viewEnrollmentsButton = new JButton("View Enrollments");
         generateReportButton = new JButton("Generate Report");
+        addStudentButton = new JButton("Create Student");
+        addTeacherButton = new JButton("Add Teacher");
 
         adminMainMenuPanel.add(addCourseButton);
         adminMainMenuPanel.add(updateCourseButton);
         adminMainMenuPanel.add(deleteCourseButton);
         adminMainMenuPanel.add(viewEnrollmentsButton);
         adminMainMenuPanel.add(generateReportButton);
+        adminMainMenuPanel.add(addStudentButton);
+        adminMainMenuPanel.add(addTeacherButton);
 
         // Apply language changes after initializing
         applyLanguageChanges();
@@ -63,6 +71,8 @@ public class AdminManagementView extends JFrame {
         adminManageAndGenerateReportsPage = new AdminManageAndGenerateReportsPage();
         adminUpdateCoursePage = new AdminUpdateCoursePage();
         adminViewStudentEnrollmentPage = new AdminViewStudentEnrollmentPage();
+        adminAddStudentPage = new AdminAddStudentPage();
+        adminAddTeacherPage = new AdminAddTeacherPage();
     }
 
     private void applyLanguageChanges() {
@@ -96,6 +106,14 @@ public class AdminManagementView extends JFrame {
 
     public JButton getGenerateReportButton() {
         return generateReportButton;
+    }
+
+    public JButton getAddStudentButton() {
+        return addStudentButton;
+    }
+
+    public JButton getAddTeacherButton() {
+        return addTeacherButton;
     }
 
     @Override

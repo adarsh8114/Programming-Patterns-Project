@@ -33,6 +33,11 @@ public class StudentLoginPage extends JFrame{
         return ErrorLabel;
     }
 
+    /**
+     * Updates the UI text based on the provided language resource bundle.
+     *
+     * @param resourceBundle the ResourceBundle containing translated strings
+     */
     public void changeLanguage(ResourceBundle resourceBundle) {
         WelcomeLabel.setText(resourceBundle.getString("welcomeStudentLoginPage"));
         StudentId.setText(resourceBundle.getString("studentIdLabel"));

@@ -38,6 +38,11 @@ public class StudentMainMenuPage extends JFrame{
         return StudentNameLabel;
     }
 
+    /**
+     * Updates the UI text based on the provided language resource bundle.
+     *
+     * @param resourceBundle the ResourceBundle containing translated strings
+     */
     public void changeLanguage(ResourceBundle resourceBundle) {
         TitleLabel.setText(resourceBundle.getString("welcome"));
         InstructionLabel.setText(resourceBundle.getString("selectFollowingOptionsLabel"));

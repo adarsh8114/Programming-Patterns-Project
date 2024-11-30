@@ -1,12 +1,15 @@
 package org.vanier.controller;
 
+import org.vanier.factory.PersonFactory;
 import org.vanier.model.AdminModel;
 import org.vanier.model.CourseModel;
 import org.vanier.model.StudentModel;
+import org.vanier.model.TeacherModel;
 import org.vanier.view.AdminManagementView;
 import org.vanier.view.adminPanels.AdminViewStudentEnrollmentPage;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +30,8 @@ public class AdminManagementController {
         adminManagementView.getUpdateCourseButton().addActionListener(e -> updateCourse());
         adminManagementView.getDeleteCourseButton().addActionListener(e -> deleteCourse());
         adminManagementView.getGenerateReportButton().addActionListener(e -> generateReport());
+        adminManagementView.getAddStudentButton().addActionListener(e -> addStudent());
+        adminManagementView.getAddTeacherButton().addActionListener(e -> addTeacher());
     }
 
     private void openViewStudentEnrollmentPage() {
@@ -67,6 +72,41 @@ public class AdminManagementController {
         } catch (NumberFormatException ex) {
             enrollmentTextArea.setText("");
             JOptionPane.showMessageDialog(enrollmentPage, "Please enter a valid numeric Course ID.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void addTeacher() {
+        try {
+            String firstName = JOptionPane.showInputDialog("Enter First Name:");
+            String lastName = JOptionPane.showInputDialog("Enter Last Name:");
+            String phoneNumber = JOptionPane.showInputDialog("Enter Phone Number:");
+            String emailAddress = JOptionPane.showInputDialog("Enter Email Address:");
+            String password = JOptionPane.showInputDialog("Enter Password:");
+
+            TeacherModel teacher = (TeacherModel) PersonFactory.createPerson("Teacher", firstName, lastName,
+                    phoneNumber, emailAddress, password, null);
+
+            adminModel.addTeacher(teacher);
+
+            JOptionPane.showMessageDialog(adminManagementView, "Teacher added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(adminManagementView, "Error adding teacher. Please check the input values.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void addStudent() {
+        try {
+            String firstName = JOptionPane.showInputDialog("Enter First Name:");
+            String lastName = JOptionPane.showInputDialog("Enter Last Name:");
+            String phoneNumber = JOptionPane.showInputDialog("Enter Phone Number:");
+            String emailAddress = JOptionPane.showInputDialog("Enter Email Address:");
+            String password = JOptionPane.showInputDialog("Enter Password:");
+
+            StudentModel student = (StudentModel) PersonFactory.createPerson("Student", firstName, lastName, phoneNumber, emailAddress, password, null);
+            adminModel.addStudent(student);
+            JOptionPane.showMessageDialog(adminManagementView, "Student added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(adminManagementView, "Error adding student. Please check the input values.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -150,4 +190,6 @@ public class AdminManagementController {
 
         JOptionPane.showMessageDialog(adminManagementView, report.toString(), "Enrollment Report", JOptionPane.INFORMATION_MESSAGE);
     }
+
+
 }

@@ -37,6 +37,11 @@ public class StudentRegisterCoursePage extends JFrame{
         return ErrorLabel;
     }
 
+    /**
+     * Updates the UI text based on the provided language resource bundle.
+     *
+     * @param resourceBundle the ResourceBundle containing translated strings
+     */
     public void changeLanguage(ResourceBundle resourceBundle) {
         TitleLabel.setText(resourceBundle.getString("registerForCourseMenuTitle"));
         CourseIdLabel.setText(resourceBundle.getString("courseIdLabel"));

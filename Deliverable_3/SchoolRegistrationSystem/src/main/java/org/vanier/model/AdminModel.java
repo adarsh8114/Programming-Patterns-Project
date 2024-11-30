@@ -11,6 +11,24 @@ public class AdminModel {
     private final RegistrationSystem registrationSystem = RegistrationSystem.getInstance();
 
     /**
+     * Adds a new student to the registration system's student list.
+     *
+     * @param student The CourseModel object representing the course to be added.
+     */
+    public void addStudent(StudentModel student) {
+        registrationSystem.getStudentList().add(student);
+    }
+
+    /**
+     * Adds a new teacher to the registration system's teacher list.
+     *
+     * @param teacher The CourseModel object representing the course to be added.
+     */
+    public void addTeacher(TeacherModel teacher) {
+        registrationSystem.getTeacherList().add(teacher);
+    }
+
+    /**
      * Adds a new course to the registration system's course list.
      *
      * @param course The CourseModel object representing the course to be added.
