@@ -1,5 +1,7 @@
 package org.vanier.controller;
 
+import org.vanier.model.*;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +61,8 @@ public class DatabaseController {
 
         String createCourseSQL = """
                     CREATE TABLE IF NOT EXISTS Course (
-                        COURSE_NUMBER INTEGER PRIMARY KEY,
+                        COURSE_ID INTEGER PRIMARY KEY,
+                        COURSE_NUMBER INTEGER,
                         COURSE_TYPE TEXT,
                         COURSE_SECTION INTEGER,
                         COURSE_CAPACITY INTEGER,
@@ -316,21 +319,29 @@ public class DatabaseController {
     }
 
     // Read all Students
-    public static List<String> readStudents() {
-        String sql = "SELECT * FROM Student";
-        List<String> students = new ArrayList<>();
+    public static List<StudentModel> readStudents() {
+        String sql = "SELECT * FROM Student"; // Adjust this query to match your database schema.
+        List<StudentModel> students = new ArrayList<>();
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(sql)) {
 
             while (rs.next()) {
-                String student = String.format("ID: %d, Name: %s %s, Email: %s, Phone: %s",
-                        rs.getInt("STUDENT_ID"),
+                // Create a new StudentModel object
+                StudentModel student = new StudentModel(
                         rs.getString("FIRST_NAME"),
                         rs.getString("LAST_NAME"),
+                        rs.getString("PHONE_NUMBER"),
                         rs.getString("EMAIL_ADDRESS"),
-                        rs.getString("PHONE_NUMBER"));
+                        rs.getString("PASSWORD")
+                );
+
+                student.setId(rs.getInt("STUDENT_ID"));
+                student.setNumberCoursesRegistered(rs.getInt("NUMBER_COURSES_REGISTERED"));
+                student.setFullTime(rs.getBoolean("IS_FULL_TIME"));
+
+                // Add the student to the list
                 students.add(student);
             }
         } catch (SQLException e) {
@@ -341,21 +352,29 @@ public class DatabaseController {
     }
 
     // Read all Teachers
-    public static List<String> readTeachers() {
-        String sql = "SELECT * FROM Teacher";
-        List<String> teachers = new ArrayList<>();
+    public static List<TeacherModel> readTeachers() {
+        String sql = "SELECT * FROM Teacher"; // Adjust this query to match your database schema.
+        List<TeacherModel> teachers = new ArrayList<>();
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(sql)) {
 
             while (rs.next()) {
-                String teacher = String.format("ID: %d, Name: %s %s, Email: %s, Phone: %s",
-                        rs.getInt("TEACHER_ID"),
+                // Create a TeacherModel object
+                TeacherModel teacher = new TeacherModel(
                         rs.getString("FIRST_NAME"),
                         rs.getString("LAST_NAME"),
+                        rs.getString("PHONE_NUMBER"),
                         rs.getString("EMAIL_ADDRESS"),
-                        rs.getString("PHONE_NUMBER"));
+                        rs.getString("PASSWORD"), // Assuming PASSWORD is a column in the database
+                        new ArrayList<>() // Placeholder for coursesTeaching; you can populate this later
+                );
+
+                // Set additional fields if necessary
+                teacher.setId(rs.getInt("TEACHER_ID")); // Assuming setId is inherited from PersonModel
+
+                // Add the teacher to the list
                 teachers.add(teacher);
             }
         } catch (SQLException e) {
@@ -365,51 +384,64 @@ public class DatabaseController {
         return teachers;
     }
 
+
     // Read all Admins
-    public static List<String> readAdmins() {
-        String sql = "SELECT * FROM Admin";
-        List<String> admins = new ArrayList<>();
+    public static List<AdminModel> readAdmins() {
+        String sql = "SELECT * FROM Admin"; // Adjust this query to match your database schema
+        List<AdminModel> admins = new ArrayList<>();
+        RegistrationSystem registrationSystem = RegistrationSystem.getInstance();
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(sql)) {
 
             while (rs.next()) {
-                String admin = String.format("ID: %d, Name: %s %s, Email: %s, Phone: %s",
-                        rs.getInt("ADMIN_ID"),
-                        rs.getString("FIRST_NAME"),
-                        rs.getString("LAST_NAME"),
-                        rs.getString("EMAIL_ADDRESS"),
-                        rs.getString("PHONE_NUMBER"));
+                // Create a new AdminModel instance
+                AdminModel admin = new AdminModel();
+
+                // Add the admin to the list
                 admins.add(admin);
             }
+
+            // Optionally update the RegistrationSystem's admin list
+            registrationSystem.setAdminList(admins);
         } catch (SQLException e) {
             System.out.println("Failed to fetch admins: " + e.getMessage());
         }
 
         return admins;
     }
-
     // Read all Courses
-    public static List<String> readCourses() {
-        String sql = "SELECT * FROM Course";
-        List<String> courses = new ArrayList<>();
+    public static List<CourseModel> readCourses() {
+        String sql = "SELECT * FROM Courses"; // Adjust to match your database schema
+        List<CourseModel> courses = new ArrayList<>();
+        RegistrationSystem registrationSystem = RegistrationSystem.getInstance();
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(sql)) {
 
             while (rs.next()) {
-                String course = String.format("Course Number: %d, Type: %s, Section: %d, Capacity: %d/%d, Credits: %d, Teacher ID: %d",
-                        rs.getInt("COURSE_NUMBER"),
-                        rs.getString("COURSE_TYPE"),
-                        rs.getInt("COURSE_SECTION"),
-                        rs.getInt("CURRENT_ENROLLMENT_NUMBER"),
-                        rs.getInt("COURSE_CAPACITY"),
-                        rs.getInt("COURSE_CREDITS"),
-                        rs.getInt("TEACHER_ID"));
+                // Create a new CourseModel instance
+                CourseModel course = new CourseModel(
+                        rs.getString("COURSE_NUMBER"),    // Course number
+                        rs.getInt("COURSE_SECTION"),     // Course section
+                        rs.getInt("COURSE_CAPACITY"),    // Course capacity
+                        rs.getInt("COURSE_CREDITS"),     // Course credits
+                        rs.getInt("START_TIME"),         // Start time
+                        rs.getInt("END_TIME"),           // End time
+                        rs.getString("DAY_OF_WEEK")      // Day of the week
+                );
+
+                // Populate additional fields
+                course.setCurrentEnrollementNumber(rs.getInt("CURRENT_ENROLLMENT"));
+
+                // Add the course to the list
                 courses.add(course);
             }
+
+            // Optionally update the RegistrationSystem's course list
+            registrationSystem.setCourseList(courses);
         } catch (SQLException e) {
             System.out.println("Failed to fetch courses: " + e.getMessage());
         }

@@ -48,6 +48,14 @@ public class RegistrationSystem {
         return registrationSystem;
     }
 
+    public List<AdminModel> getAdminList() {
+        return adminList;
+    }
+
+    public void setAdminList(List<AdminModel> adminList) {
+        this.adminList = adminList;
+    }
+
     public List<StudentModel> getStudentList() {
         return studentList;
     }
