@@ -26,7 +26,8 @@ public class TeacherViewCourseDetailsPage {
     }
 
     public void changeLanguage(ResourceBundle resourceBundle) {
-        returnButton.setText("teacherViewDetailsReturnButton");
+        returnButton.setText(resourceBundle.getString("teacherViewDetailsReturnButton"));
+        courseSelectedLabel.setText(resourceBundle.getString("teacherCourseDetailsErrorLabel"));
 
     }
 }

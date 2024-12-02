@@ -1,5 +1,6 @@
 package org.vanier;
 
+import org.vanier.controller.DatabaseController;
 import org.vanier.view.MainForm;
 
 import javax.swing.*;
@@ -14,5 +15,6 @@ public class Main {
         frame.pack();
         frame.setVisible(true);
 
+        DatabaseController.deleteTables();
     }
 }

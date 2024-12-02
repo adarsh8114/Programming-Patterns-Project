@@ -5,6 +5,7 @@ import org.vanier.view.teachersPanels.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ResourceBundle;
 
 public class TeacherView extends JFrame {
     private JPanel mainPanel;
@@ -32,11 +33,6 @@ public class TeacherView extends JFrame {
         teacherViewSchedulePage = new TeacherViewSchedulePage();
         teacherViewCourseDetailsPage = new TeacherViewCourseDetailsPage();
 
-        teacherLoginPage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
-        teacherMainMenuPage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
-        teacherViewCourseTeachingPage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
-        teacherViewSchedulePage.changeLanguage(RegistrationSystem.getInstance().getResourceBundle());
-
         // Add pages to the CardLayout panel with unique names
         mainPanel.add(teacherLoginPage.getTeacherLoginPagePanel(), "login");
         mainPanel.add(teacherMainMenuPage.getTeacherMainMenuPanel(), "mainMenu");
@@ -47,10 +43,13 @@ public class TeacherView extends JFrame {
         // Add the mainPanel to the JFrame
         add(mainPanel);
     }
-
-    // Method to show a specific panel by name
-    public void showPanel(String panelName) {
-        cardLayout.show(mainPanel, panelName);
+    // method to change language
+    public void changeLanguage(ResourceBundle resourceBundle) {
+        teacherLoginPage.changeLanguage(resourceBundle);
+        teacherMainMenuPage.changeLanguage(resourceBundle);
+        teacherViewCourseTeachingPage.changeLanguage(resourceBundle);
+        teacherViewSchedulePage.changeLanguage(resourceBundle);
+        teacherViewCourseDetailsPage.changeLanguage(resourceBundle);
     }
 
     // Convenience methods to show specific panels
