@@ -1,5 +1,7 @@
 package org.vanier.view.adminPanels;
 
+import org.vanier.controller.DatabaseController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ResourceBundle;
@@ -23,23 +25,85 @@ public class AdminAddCoursePage extends JPanel {
         setLayout(new GridLayout(9, 2, 10, 10)); // Arrange components in a grid layout
 
         // Initialize UI components with localized text
-        JLabel addCourseMenuLabel = new JLabel(resourceBundle.getString("addCourseMenu"));
+        addCourseMenuLabel = new JLabel(resourceBundle.getString("addCourseMenu"));
         add(addCourseMenuLabel);
         add(new JLabel()); // Empty cell for spacing
 
-        JLabel courseIdLabel = new JLabel(resourceBundle.getString("courseIdLabel"));
-        JTextField courseIdTextField = new JTextField();
+        courseIdLabel = new JLabel(resourceBundle.getString("courseIdLabel"));
+        courseIdTextField = new JTextField();
         add(courseIdLabel);
         add(courseIdTextField);
 
-        JButton returnToPreviousPageButton = new JButton(resourceBundle.getString("returnToPreviousPageButton"));
+        courseNumberLabel = new JLabel(resourceBundle.getString("courseNumberLabel"));
+        courseNumberField = new JTextField();
+        add(courseNumberLabel);
+        add(courseNumberField);
+
+        courseSectionLabel = new JLabel(resourceBundle.getString("courseSectionLabel"));
+        courseSectionField = new JTextField();
+        add(courseSectionLabel);
+        add(courseSectionField);
+
+        courseCapacityLabel = new JLabel(resourceBundle.getString("courseCapacityLabel"));
+        courseCapacityField = new JTextField();
+        add(courseCapacityLabel);
+        add(courseCapacityField);
+
+        courseCreditsLabel = new JLabel(resourceBundle.getString("courseCreditsLabel"));
+        courseCreditsField = new JTextField();
+        add(courseCreditsLabel);
+        add(courseCreditsField);
+
+        startTimeLabel = new JLabel(resourceBundle.getString("startTimeLabel"));
+        startTimeField = new JTextField();
+        add(startTimeLabel);
+        add(startTimeField);
+
+        endTimeLabel = new JLabel(resourceBundle.getString("endTimeLabel"));
+        endTimeField = new JTextField();
+        add(endTimeLabel);
+        add(endTimeField);
+
+        dayOfWeekLabel = new JLabel(resourceBundle.getString("dayOfWeekLabel"));
+        dayOfWeekField = new JTextField();
+        add(dayOfWeekLabel);
+        add(dayOfWeekField);
+
+        courseAddButton = new JButton(resourceBundle.getString("courseAddButton"));
+        courseAddButton.addActionListener(e -> {
+            try {
+                // Fetch user input
+                int courseId = Integer.parseInt(courseIdTextField.getText());
+                int courseNumber = Integer.parseInt(courseNumberField.getText());
+                String type = "General"; // Example, customize as needed
+                int section = Integer.parseInt(courseSectionField.getText());
+                int capacity = Integer.parseInt(courseCapacityField.getText());
+                int credits = Integer.parseInt(courseCreditsField.getText());
+                String startTime = startTimeField.getText();
+                String endTime = endTimeField.getText();
+                String dayOfWeek = dayOfWeekField.getText();
+                String location = "Online"; // Example, customize as needed
+                int teacherId = 0; // Default, or fetch from another input field
+
+                // Call DatabaseController to add the course
+                DatabaseController.addCourse(courseId, courseNumber, type, section, capacity, 0, credits, startTime, endTime, dayOfWeek, location, teacherId);
+
+                // Show success message
+                JOptionPane.showMessageDialog(this, "Course added successfully!");
+            } catch (Exception ex) {
+                // Show error message
+                JOptionPane.showMessageDialog(this, "Error adding course: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        add(courseAddButton);
+
+        returnToPreviousPageButton = new JButton(resourceBundle.getString("returnToPreviousPageButton"));
         returnToPreviousPageButton.addActionListener(e -> {
             JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(parentPanel);
             if (topFrame != null) {
                 topFrame.dispose();
             }
         });
-        add(new JLabel()); // Spacer
         add(returnToPreviousPageButton);
     }
 
