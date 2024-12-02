@@ -24,5 +24,6 @@ public class TeacherViewSchedulePage {
     public void changeLanguage(ResourceBundle resourceBundle) {
         viewCourseLabel.setText(resourceBundle.getString("teacherViewCourseLabel"));
         returnButton.setText(resourceBundle.getString("teacherViewScheduleReturnButton"));
+        teacherScheduleTextArea.setText(resourceBundle.getString("teacherScheduleErrorLabel"));
     }
 }

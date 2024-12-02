@@ -12,6 +12,11 @@ public class TeacherLoginPage {
     private JPasswordField teacherPasswordTextField;
     private JPanel teacherLoginPagePanel;
     private JLabel errorLabel;
+    private JButton goBackButton;
+
+    public JButton getGoBackButton() {
+        return goBackButton;
+    }
 
     public JTextField getTeacherIDTextField() {
         return teacherIDTextField;
@@ -38,5 +43,6 @@ public class TeacherLoginPage {
         teacherIdLabel.setText(resourceBundle.getString("teacherIDLabel"));
         passwordLabel.setText(resourceBundle.getString("passwordTeacherLabel"));
         loginConfirmButton.setText(resourceBundle.getString("teacherLoginConfirmButton"));
+        goBackButton.setText(resourceBundle.getString("teacherLoginBackButton"));
     }
 }

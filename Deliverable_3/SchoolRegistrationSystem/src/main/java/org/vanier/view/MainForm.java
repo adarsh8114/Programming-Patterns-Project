@@ -25,7 +25,7 @@ public class MainForm extends JFrame {
 
     public MainForm() {
         panelMain = new JPanel();
-        welcomeLabel = new JLabel("-------------------------------------Welcome to the School Management System. Please select an option:");
+        welcomeLabel = new JLabel("Welcome to the School Management System. Please select an option:");
         teacherJButton = new JButton("Teacher");
         adminJButton = new JButton("Admin");
         studentJButton = new JButton("Student");

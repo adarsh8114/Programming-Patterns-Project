@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class DatabaseController {
-    private static final String DB_URL = "jdbc:sqlite:./src/main/resources/database/data.db";
+    private static final String DB_URL = "jdbc:sqlite:./SchoolRegistrationSystem/src/main/resources/database/data.db";
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
     private static final ReentrantReadWriteLock.ReadLock READ_LOCK = LOCK.readLock();
     private static final ReentrantReadWriteLock.WriteLock WRITE_LOCK = LOCK.writeLock();
@@ -74,7 +74,7 @@ public class DatabaseController {
                         COURSE_START_TIME TEXT,
                         COURSE_END_TIME TEXT,
                         COURSE_DAY_OF_WEEK TEXT,
-                        ONLINE_LOCATION TEXT,
+                        LOCATION TEXT,
                         TEACHER_ID INTEGER,
                         FOREIGN KEY (TEACHER_ID) REFERENCES Teacher(TEACHER_ID)
                     )
@@ -83,10 +83,10 @@ public class DatabaseController {
         String createRegisteredSQL = """
                     CREATE TABLE IF NOT EXISTS Registered (
                         STUDENT_ID INTEGER,
-                        COURSE_NUMBER INTEGER,
-                        PRIMARY KEY (STUDENT_ID, COURSE_NUMBER),
+                        COURSE_ID INTEGER,
+                        PRIMARY KEY (STUDENT_ID, COURSE_ID),
                         FOREIGN KEY (STUDENT_ID) REFERENCES Student(STUDENT_ID),
-                        FOREIGN KEY (COURSE_NUMBER) REFERENCES Course(COURSE_NUMBER)
+                        FOREIGN KEY (COURSE_ID) REFERENCES Course(COURSE_ID)
                     )
                 """;
 
@@ -105,6 +105,36 @@ public class DatabaseController {
             System.out.println("Registered Table Created!");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    public static void deleteTables() {
+        String deleteRegisteredSQL = "DROP TABLE IF EXISTS Registered";
+        String deleteCourseSQL = "DROP TABLE IF EXISTS Course";
+        String deleteAdminSQL = "DROP TABLE IF EXISTS Admin";
+        String deleteTeacherSQL = "DROP TABLE IF EXISTS Teacher";
+        String deleteStudentSQL = "DROP TABLE IF EXISTS Student";
+
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement()) {
+
+            // Drop each table
+            statement.execute(deleteRegisteredSQL);
+            System.out.println("Registered Table Deleted!");
+
+            statement.execute(deleteCourseSQL);
+            System.out.println("Course Table Deleted!");
+
+            statement.execute(deleteAdminSQL);
+            System.out.println("Admin Table Deleted!");
+
+            statement.execute(deleteTeacherSQL);
+            System.out.println("Teacher Table Deleted!");
+
+            statement.execute(deleteStudentSQL);
+            System.out.println("Student Table Deleted!");
+        } catch (SQLException e) {
+            System.out.println("Error while deleting tables: " + e.getMessage());
         }
     }
 
@@ -195,8 +225,7 @@ public class DatabaseController {
                 INSERT INTO Course (
                     COURSE_ID, COURSE_NUMBER, COURSE_TYPE, COURSE_SECTION, COURSE_CAPACITY, 
                     CURRENT_ENROLLMENT_NUMBER, COURSE_CREDITS, COURSE_START_TIME, COURSE_END_TIME, 
-                    COURSE_DAY_OF_WEEK, LOCATION, TEACHER_ID
-                )
+                    COURSE_DAY_OF_WEEK, LOCATION, TEACHER_ID)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """;
 
@@ -229,9 +258,9 @@ public class DatabaseController {
     }
 
     // Register Student to a Course
-    public static void registerStudentToCourse(int studentId, int courseNumber) {
+    public static void registerStudentToCourse(int studentId, int courseID) {
         String sql = """
-                    INSERT INTO Registered (STUDENT_ID, COURSE_NUMBER)
+                    INSERT INTO Registered (STUDENT_ID, COURSE_ID)
                     VALUES (?, ?)
                 """;
 
@@ -239,7 +268,7 @@ public class DatabaseController {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, studentId);
-            preparedStatement.setInt(2, courseNumber);
+            preparedStatement.setInt(2, courseID);
             preparedStatement.executeUpdate();
             System.out.println("Student registered to course successfully!");
         } catch (SQLException e) {
@@ -292,18 +321,18 @@ public class DatabaseController {
     }
 
     // Delete a Course
-    public static void deleteCourse(int courseNumber) {
-        String sql = "DELETE FROM Course WHERE COURSE_NUMBER = ?";
+    public static void deleteCourse(int courseID) {
+        String sql = "DELETE FROM Course WHERE COURSE_ID = ?";
 
         WRITE_LOCK.lock();
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, courseNumber);
+            preparedStatement.setInt(1, courseID);
             int rowsDeleted = preparedStatement.executeUpdate();
             if (rowsDeleted > 0) {
                 System.out.println("Course deleted successfully!");
             } else {
-                System.out.println("No course found with number: " + courseNumber);
+                System.out.println("No course found with number: " + courseID);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -314,7 +343,7 @@ public class DatabaseController {
 
     // Remove a Student from the Registered Table
     public static void removeStudentFromRegistered(int studentId, int courseNumber) {
-        String sql = "DELETE FROM Registered WHERE STUDENT_ID = ? AND COURSE_NUMBER = ?";
+        String sql = "DELETE FROM Registered WHERE STUDENT_ID = ? AND COURSE_ID = ?";
 
         WRITE_LOCK.lock();
         try (Connection connection = getConnection();
@@ -347,7 +376,7 @@ public class DatabaseController {
             JOIN Registered registered ON students.STUDENT_ID = registered.STUDENT_ID
             JOIN Course courses ON registered.COURSE_NUMBER = courses.COURSE_NUMBER
             """;
-
+        READ_LOCK.lock();
         List<StudentModel> studentList = new ArrayList<>();
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
@@ -398,6 +427,8 @@ public class DatabaseController {
             }
         } catch (SQLException e) {
             System.out.println("Error listing all students with courses: " + e.getMessage());
+        } finally {
+            READ_LOCK.unlock();
         }
         return studentList;
     }
@@ -415,7 +446,7 @@ public class DatabaseController {
             FROM Teacher t
             LEFT JOIN Course c ON t.TEACHER_ID = c.TEACHER_ID
             """;
-
+        READ_LOCK.lock();
         Map<Integer, TeacherModel> teacherMap = new HashMap<>();
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
@@ -468,6 +499,8 @@ public class DatabaseController {
 
         } catch (SQLException e) {
             System.out.println("Failed to fetch teachers and their courses: " + e.getMessage());
+        } finally {
+            READ_LOCK.unlock();
         }
 
         return new ArrayList<>(teacherMap.values());
@@ -476,6 +509,7 @@ public class DatabaseController {
     // Read all Admins
     public static List<AdminModel> readAdmins() {
         String sql = "SELECT * FROM Admin"; // Adjust this query to match your database schema
+        READ_LOCK.lock();
         List<AdminModel> admins = new ArrayList<>();
         RegistrationSystem registrationSystem = RegistrationSystem.getInstance();
 
@@ -495,6 +529,8 @@ public class DatabaseController {
             registrationSystem.setAdminList(admins);
         } catch (SQLException e) {
             System.out.println("Failed to fetch admins: " + e.getMessage());
+        } finally {
+            READ_LOCK.unlock();
         }
 
         return admins;
@@ -515,10 +551,10 @@ public class DatabaseController {
                 s.NUMBER_COURSES_REGISTERED, s.IS_FULL_TIME
             FROM Course c
             LEFT JOIN Teacher t ON c.TEACHER_ID = t.TEACHER_ID
-            LEFT JOIN Registered r ON c.COURSE_NUMBER = r.COURSE_NUMBER
+            LEFT JOIN Registered r ON c.COURSE_ID = r.COURSE_ID
             LEFT JOIN Student s ON r.STUDENT_ID = s.STUDENT_ID
             """;
-
+        READ_LOCK.lock();
         Map<Integer, CourseModel> courseMap = new HashMap<>(); // To store courses by their COURSE_ID
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
@@ -583,8 +619,9 @@ public class DatabaseController {
 
         } catch (SQLException e) {
             System.out.println("Error fetching courses: " + e.getMessage());
+        } finally {
+            READ_LOCK.unlock();
         }
-
         return new ArrayList<>(courseMap.values());
     }
 
@@ -618,4 +655,5 @@ public class DatabaseController {
         registrationSystem.setStudentList(readStudents());
         registrationSystem.setTeacherList(readTeachers());
     }
+
 }
