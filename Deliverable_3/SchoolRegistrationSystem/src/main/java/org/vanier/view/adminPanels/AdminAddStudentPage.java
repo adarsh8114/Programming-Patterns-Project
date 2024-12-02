@@ -1,5 +1,6 @@
 package org.vanier.view.adminPanels;
 
+import org.vanier.controller.DatabaseController;
 import org.vanier.model.RegistrationSystem;
 
 import javax.swing.*;
@@ -46,13 +47,45 @@ public class AdminAddStudentPage extends JPanel{
         add(passwordField);
 
         addStudentButton = new JButton(resourceBundle.getString("addStudentButton"));
+        addStudentButton.addActionListener(e -> {
+            try {
+                // Fetch user input
+                int studentId = 0; // Set default or generate if required
+                String firstName = firstNameField.getText();
+                String lastName = lastNameField.getText();
+                String phoneNumber = phoneNumberField.getText();
+                String email = emailAddressField.getText();
+                String password = passwordField.getText();
+                int coursesRegistered = 0; // Default value
+                boolean isFullTime = true; // Example default, adjust if needed
+
+                // Validate inputs (simple example)
+                if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "All fields must be filled out.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Call DatabaseController to add the student
+                DatabaseController.addStudent(studentId, firstName, lastName, phoneNumber, email, password, coursesRegistered, isFullTime);
+
+                // Show success message
+                JOptionPane.showMessageDialog(this, "Student added successfully!");
+            } catch (Exception ex) {
+                // Show error message
+                JOptionPane.showMessageDialog(this, "Error adding student: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
         add(addStudentButton);
 
         returnToPreviousPageButton = new JButton(resourceBundle.getString("returnToPreviousPageButton"));
+        returnToPreviousPageButton.addActionListener(e -> {
+            JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            if (topFrame != null) {
+                topFrame.dispose();
+            }
+        });
         add(returnToPreviousPageButton);
     }
-
-
 
     /**
      * Updates the UI text based on the provided language resource bundle.

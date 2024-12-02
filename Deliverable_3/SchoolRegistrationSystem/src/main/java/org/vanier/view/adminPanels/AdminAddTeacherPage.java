@@ -1,5 +1,7 @@
 package org.vanier.view.adminPanels;
 
+import org.vanier.controller.DatabaseController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ResourceBundle;
@@ -44,9 +46,41 @@ public class AdminAddTeacherPage extends JPanel {
         add(passwordField);
 
         addTeacherButton = new JButton(resourceBundle.getString("addTeacherButton"));
+        addTeacherButton.addActionListener(e -> {
+            try {
+                // Fetch user input
+                int teacherId = 0; // Set default or generate if required
+                String firstName = firstNameField.getText();
+                String lastName = lastNameField.getText();
+                String phoneNumber = phoneNumberField.getText();
+                String email = emailAddressField.getText();
+                String password = passwordField.getText();
+
+                // Validate inputs (simple example)
+                if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "All fields must be filled out.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Call DatabaseController to add the teacher
+                DatabaseController.addTeacher(teacherId, firstName, lastName, phoneNumber, email, password);
+
+                // Show success message
+                JOptionPane.showMessageDialog(this, "Teacher added successfully!");
+            } catch (Exception ex) {
+                // Show error message
+                JOptionPane.showMessageDialog(this, "Error adding teacher: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
         add(addTeacherButton);
 
         returnToPreviousPageButton = new JButton(resourceBundle.getString("returnToPreviousPageButton"));
+        returnToPreviousPageButton.addActionListener(e -> {
+            JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            if (topFrame != null) {
+                topFrame.dispose();
+            }
+        });
         add(returnToPreviousPageButton);
     }
 
