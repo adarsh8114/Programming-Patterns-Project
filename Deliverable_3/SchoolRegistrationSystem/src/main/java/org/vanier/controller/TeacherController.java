@@ -127,7 +127,7 @@ public class TeacherController {
     /**
      * Verifies teacher credentials using the database.
      */
-    private TeacherModel verifyTeacherInputLogin(int id, String password) {
+    public TeacherModel verifyTeacherInputLogin(int id, String password) {
         String query = "SELECT * FROM Teacher WHERE TEACHER_ID = ? AND PASSWORD = ?";
         try (Connection conn = DatabaseController.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -151,11 +151,10 @@ public class TeacherController {
                 );
                 teacher.setId(rs.getInt("TEACHER_ID")); // Set the ID
                 return teacher;
-            } else {
-                System.out.println("Invalid credentials for Teacher ID: " + id);
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return null;
     }
